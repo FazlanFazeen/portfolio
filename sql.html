@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>English → SQL for PostgreSQL — Plan & UI Mock</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#f7fafc;--card:#ffffff;--line:#e5e7eb;--text:#0f172a;--muted:#475569;--accent:#0ea5e9;--good:#16a34a;--warn:#f59e0b;--bad:#ef4444}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Arial,sans-serif;line-height:1.6}
+  .wrap{max-width:1200px;margin:auto;padding:32px 20px}
+  h1{font-size:clamp(24px,4vw,36px);margin:.2rem 0 1rem}
+  h2{margin:1.6rem 0 .6rem}
+  h3{margin:1rem 0 .4rem}
+  .grid{display:grid;gap:16px}
+  .g-2{grid-template-columns:1.2fr .8fr}
+  .g-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}
+  .muted{color:var(--muted)}
+  .kicker{font-size:.85rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+  code, pre{background:#0b1220; color:#d1e7ff; padding:.6rem .8rem; border-radius:10px; overflow:auto}
+  table{width:100%;border-collapse:collapse}
+  th,td{border:1px solid var(--line);padding:.5rem .6rem;text-align:left}
+  th{background:#eef6ff}
+  .pill{display:inline-block;padding:.2rem .5rem;border-radius:999px;border:1px solid var(--line);background:#fff}
+  .badge{display:inline-block;padding:.15rem .45rem;border-radius:6px;font-size:.8rem}
+  .ok{background:#ecfdf5;color:#065f46}
+  .warn{background:#fff7ed;color:#92400e}
+  .danger{background:#fef2f2;color:#991b1b}
+  .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .right{margin-left:auto}
+  .btn{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:.6rem .9rem;cursor:pointer}
+  .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace}
+  .sticky{position:sticky; top:16px}
+  .lo{opacity:.9}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="row">
+      <div>
+        <div class="kicker">Solution Design</div>
+        <h1>English → SQL Tool for PostgreSQL (Reporting‑first)</h1>
+        <p class="muted">Plan first (with sample data + UI mock). No backend code yet.</p>
+      </div>
+      <div class="right pill">Owner: Fazlan • Target: Reporting & Ops</div>
+    </header>
+
+    <section class="grid g-2">
+      <div class="card">
+        <h2>1) Goal</h2>
+        <p>Create a safe, scalable way for non‑technical users to ask questions in English and run read‑only SQL against a PostgreSQL data mart, with review/guardrails and explainability.</p>
+
+        <h2>2) Core flow</h2>
+        <ol>
+          <li><strong>User prompt</strong> → “List unpaid employees for this month.”</li>
+          <li><strong>Schema context</strong> fetched (tables, columns, joins, row‑level filters).</li>
+          <li><strong>LLM drafts SQL</strong> (few‑shot examples + style guide).</li>
+          <li><strong>Validator</strong> parses SQL → allows only <em>SELECT</em>, checks tables/columns, injects <span class="mono">LIMIT</span>, blocks cross‑tenant access, parametrizes dates.</li>
+          <li><strong>Dry‑run/EXPLAIN</strong> to estimate cost; optionally sample (<span class="mono">LIMIT 100</span>).</li>
+          <li><strong>Human‑in‑the‑loop</strong> UI: show SQL + rationale; user approves.</li>
+          <li><strong>Execute</strong> read‑only on replica; render table + charts.</li>
+          <li><strong>Save</strong> as named report; schedule; share; export CSV/XLSX.</li>
+        </ol>
+
+        <h2>3) What to feed the LLM</h2>
+        <ul>
+          <li><strong>Schema summary</strong>: table names, columns, types, PK/FK, join keys, row‑level constraints.</li>
+          <li><strong>Business dictionary</strong>: what “unpaid”, “this month”, “pending payroll” mean.</li>
+          <li><strong>Few‑shot pairs</strong>: English → SQL examples targeted to your schema.</li>
+          <li><strong>Guardrails</strong>: read‑only, safe functions only, use CTEs, never <span class="mono">SELECT *</span>, always qualify columns, add <span class="mono">LIMIT</span> for previews.</li>
+        </ul>
+
+        <h2>4) Scale & safety</h2>
+        <ul>
+          <li><strong>Schema cache</strong> per tenant in Redis; refresh hourly.</li>
+          <li><strong>Read replicas</strong> for analytics queries; role with <span class="mono">USAGE</span>/<span class="mono">SELECT</span> only.</li>
+          <li><strong>SQL AST validation</strong> (e.g., sqlglot/pgsql parser) + allow‑list of tables.</li>
+          <li><strong>Query budget</strong>: row/time caps, kill‑switch, circuit‑breaker.</li>
+          <li><strong>Audit</strong>: prompts, SQL, plans, result metadata, who ran what.</li>
+          <li><strong>Cost control</strong>: prompt compression, toolformer‑style schema lookup, caching LLM outputs.</li>
+        </ul>
+
+        <h2>5) Tech stack (suggested)</h2>
+        <ul>
+          <li><strong>Backend</strong>: FastAPI (Python), <span class="mono">asyncpg</span>, pydantic. Optional: Celery for long queries.</li>
+          <li><strong>LLM layer</strong>: prompt templates + few‑shot, reranking; optional reroute to smaller model for known intents.</li>
+          <li><strong>Validation</strong>: sqlglot/pgparse; data privileges by role; RLS at DB when applicable.</li>
+          <li><strong>DB</strong>: PostgreSQL (primary + read replica). Pre‑built reporting views.</li>
+          <li><strong>UI</strong>: React (later). For now, HTML mock below.</li>
+          <li><strong>Obs</strong>: OpenTelemetry, query logs, dashboards.</li>
+        </ul>
+      </div>
+
+      <aside class="card sticky">
+        <h3>Use‑case shortlist (Reporting)</h3>
+        <ol>
+          <li><strong>Unpaid employees (current month)</strong> — core example.</li>
+          <li>Partially paid this month (detect underpayment/advance offsets).</li>
+          <li>Payroll variance MoM by department/cost center.</li>
+          <li>Overtime anomalies vs. contracted hours.</li>
+          <li>Headcount by status (active, probation, contract ending soon).</li>
+          <li>Benefits eligibility gaps (no bank details, missing tax forms).</li>
+          <li>Aging: unpaid > 30 days (retro adjustments, reversals).</li>
+        </ol>
+        <p class="muted">Start with #1 and #2 to maximize value and validate accuracy.</p>
+      </aside>
+    </section>
+
+    <section class="card">
+      <h2>6) Sample data (minimal)</h2>
+      <div class="grid g-3">
+        <div>
+          <h3>employees</h3>
+          <table>
+            <thead><tr><th>employee_id (PK)</th><th>full_name</th><th>dept</th><th>status</th><th>bank_acct_present</th></tr></thead>
+            <tbody>
+              <tr><td>101</td><td>Asha Perera</td><td>Ops</td><td>active</td><td>true</td></tr>
+              <tr><td>102</td><td>Nimal Silva</td><td>Finance</td><td>active</td><td>true</td></tr>
+              <tr><td>103</td><td>Ravi Kumar</td><td>Ops</td><td>active</td><td>false</td></tr>
+              <tr><td>104</td><td>Meera Jay</td><td>HR</td><td>inactive</td><td>true</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <h3>payroll_periods</h3>
+          <table>
+            <thead><tr><th>period_id (PK)</th><th>start_date</th><th>end_date</th><th>month</th><th>year</th></tr></thead>
+            <tbody>
+              <tr><td>2025-09</td><td>2025-09-01</td><td>2025-09-30</td><td>9</td><td>2025</td></tr>
+              <tr><td>2025-10</td><td>2025-10-01</td><td>2025-10-31</td><td>10</td><td>2025</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <h3>payments</h3>
+          <table>
+            <thead><tr><th>payment_id (PK)</th><th>employee_id (FK)</th><th>period_id (FK)</th><th>gross_due</th><th>paid_amount</th><th>paid_at</th></tr></thead>
+            <tbody>
+              <tr><td>9001</td><td>101</td><td>2025-10</td><td>2000</td><td>2000</td><td>2025-10-05</td></tr>
+              <tr><td>9002</td><td>102</td><td>2025-10</td><td>2200</td><td>0</td><td>null</td></tr>
+              <tr><td>9003</td><td>103</td><td>2025-10</td><td>1800</td><td>600</td><td>2025-10-04</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="muted lo">Assumptions: one payment record per employee per period (can be partial). ‘Unpaid’ means <span class="mono">paid_amount = 0</span>; ‘Partially paid’ means <span class="mono">0 &lt; paid_amount &lt; gross_due</span>.</p>
+    </section>
+
+    <section class="grid g-2">
+      <div class="card">
+        <h2>7) Canonical prompts (few‑shot)</h2>
+        <p class="muted">Provide these to the LLM along with the schema summary.</p>
+        <pre class="mono">User: List unpaid employees for the current month.
+Assistant (SQL):
+WITH current_period AS (
+  SELECT period_id FROM payroll_periods
+  WHERE date_trunc('month', CURRENT_DATE) = make_date(year, month, 1)
+  LIMIT 1
+)
+SELECT e.employee_id, e.full_name, e.dept
+FROM employees e
+JOIN payments p ON p.employee_id = e.employee_id
+JOIN current_period cp ON cp.period_id = p.period_id
+WHERE e.status = 'active' AND COALESCE(p.paid_amount,0) = 0
+ORDER BY e.dept, e.full_name
+LIMIT 100;        
+        </pre>
+        <pre class="mono">User: Who are partially paid this month and how much remains?
+Assistant (SQL):
+WITH cp AS (
+  SELECT period_id FROM payroll_periods
+  WHERE date_trunc('month', CURRENT_DATE) = make_date(year, month, 1)
+  LIMIT 1
+)
+SELECT e.employee_id, e.full_name, p.gross_due, p.paid_amount,
+       (p.gross_due - COALESCE(p.paid_amount,0)) AS remaining
+FROM payments p
+JOIN employees e ON e.employee_id = p.employee_id
+JOIN cp ON cp.period_id = p.period_id
+WHERE e.status='active' AND COALESCE(p.paid_amount,0) BETWEEN 1 AND p.gross_due-1
+ORDER BY remaining DESC
+LIMIT 100;        
+        </pre>
+      </div>
+      <div class="card">
+        <h2>8) Validation rules (must‑haves)</h2>
+        <ul>
+          <li>Allow only <strong>SELECT</strong>; block DDL/DML; enforce a <span class="mono">LIMIT</span> ≤ 1000 on previews.</li>
+          <li>Qualified names only (<span class="mono">schema.table.column</span> if multiple schemas).</li>
+          <li><strong>Table allow‑list</strong>: <span class="mono">employees</span>, <span class="mono">payments</span>, <span class="mono">payroll_periods</span> etc.</li>
+          <li>Auto‑inject <strong>tenant filter</strong> (e.g., <span class="mono">company_id = $ctx.company</span>). Prefer DB‑level RLS.</li>
+          <li>Static analyzer blocks risky functions, CTE recursion, cross joins without condition.</li>
+          <li>EXPLAIN cost guard: reject if estimated rows/time exceeds budget unless admin override.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>9) UI mock (detailed)</h2>
+      <div class="grid g-2">
+        <div class="card" style="background:#f0f9ff">
+          <h3>Left panel — Ask</h3>
+          <ul>
+            <li>Prompt box (textarea) with hints.</li>
+            <li>Schema explorer (tables → columns, PK/FK badges).</li>
+            <li>Use‑case presets (Unpaid this month, Partial payments, Variance MoM).</li>
+            <li>Optional filters (Dept, Status, Period).</li>
+          </ul>
+          <textarea style="width:100%;height:110px;border:1px solid var(--line);border-radius:12px;padding:.6rem" placeholder="e.g., List unpaid employees for this month"></textarea>
+          <div class="row" style="margin-top:8px"><button class="btn">Draft SQL</button><span class="muted">or choose a preset</span></div>
+        </div>
+        <div class="card">
+          <h3>Center — Review & Explain</h3>
+          <div class="row"><strong>Generated SQL</strong><span class="right badge ok">Read‑only</span></div>
+          <pre class="mono">WITH current_period AS (
+  SELECT period_id FROM payroll_periods
+  WHERE date_trunc('month', CURRENT_DATE) = make_date(year, month, 1)
+  LIMIT 1)
+SELECT e.employee_id, e.full_name, e.dept
+FROM employees e
+JOIN payments p ON p.employee_id = e.employee_id
+JOIN current_period cp ON cp.period_id = p.period_id
+WHERE e.status = 'active' AND COALESCE(p.paid_amount,0) = 0
+ORDER BY e.dept, e.full_name
+LIMIT 100;          </pre>
+          <p class="muted">Rationale: “Unpaid” interpreted as <span class="mono">paid_amount = 0</span>; filtered to <span class="mono">status='active'</span>; current month resolved via <span class="mono">payroll_periods</span>.</p>
+          <div class="row"><button class="btn">Run on Sample</button><button class="btn" style="background:#10b981">Run on Live</button><span class="badge warn">Row cap: 1000</span></div>
+        </div>
+      </div>
+      <div class="grid g-2" style="margin-top:16px">
+        <div class="card">
+          <h3>Results (sample)</h3>
+          <table>
+            <thead><tr><th>employee_id</th><th>full_name</th><th>dept</th></tr></thead>
+            <tbody>
+              <tr><td>102</td><td>Nimal Silva</td><td>Finance</td></tr>
+              <tr><td>103</td><td>Ravi Kumar</td><td>Ops</td></tr>
+            </tbody>
+          </table>
+          <div class="row muted" style="margin-top:6px"><span>2 rows • period: 2025‑10</span><span class="right">Save report • Export CSV</span></div>
+        </div>
+        <div class="card">
+          <h3>History & Feedback</h3>
+          <table>
+            <thead><tr><th>When</th><th>Prompt</th><th>Status</th><th>Rows</th></tr></thead>
+            <tbody>
+              <tr><td>Now</td><td>Unpaid this month</td><td><span class="badge ok">OK</span></td><td>2</td></tr>
+              <tr><td>5m</td><td>Partial payments</td><td><span class="badge ok">OK</span></td><td>1</td></tr>
+              <tr><td>10m</td><td>Variance MoM</td><td><span class="badge warn">Review</span></td><td>—</td></tr>
+            </tbody>
+          </table>
+          <p class="muted">Thumbs‑up/down on results trains better prompts; admins can curate canonical queries.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid g-2">
+      <div class="card">
+        <h2>10) Finalize initial use case</h2>
+        <h3>Primary: Unpaid & partially‑paid employees (current month)</h3>
+        <ul>
+          <li>Inputs: implied current month; optional dept/status filters.</li>
+          <li>Output: list with remaining amount (if partial), totals by dept.</li>
+          <li>KPIs: #unpaid, #partial, total remaining, %resolved by week.</li>
+          <li>Actions: export; share; schedule weekly; send reminders.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>11) Next two use cases</h2>
+        <h3>Payroll variance MoM</h3>
+        <p class="muted">Compare sum(gross_due) by dept vs previous month; flag > ±10%.</p>
+        <h3>Overtime anomalies</h3>
+        <p class="muted">Requires <span class="mono">timesheets</span> table; detect outliers vs contract hours.</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>12) Implementation checklist (when coding)</h2>
+      <ul>
+        <li>Endpoint: <span class="mono">POST /nl2sql</span> → body { prompt, tenantId } → returns { sql, rationale }.</li>
+        <li>Fetch schema via <span class="mono">information_schema</span> + FK graph; compress to JSON for LLM.</li>
+        <li>Validate SQL AST → enforce rules; inject <span class="mono">LIMIT</span>; add tenant filters.</li>
+        <li>Dry run with <span class="mono">EXPLAIN (FORMAT JSON)</span>; reject if exceeds budget.</li>
+        <li>Run on read replica with read‑only role; stream results.</li>
+        <li>Log prompt, SQL, plan, timings, row count; store for history.</li>
+        <li>Admin UI to approve/canonize queries into named reports.</li>
+      </ul>
+    </section>
+
+    <footer class="muted" style="text-align:center;margin-top:24px">Plan & UI mock — no backend code yet. Ready to proceed to prototype when approved.</footer>
+  </div>
+</body>
+</html>

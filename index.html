@@ -1,183 +1,707 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Fazlan Fazeen — AI Automation Portfolio</title>
-  <meta name="description" content="Fazlan Fazeen — AI Automation & Data Engineering portfolio: projects, services, and contact." />
-  <meta name="color-scheme" content="light" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#f8fafc; --bg-2:#ffffff; --card:#ffffff; --line:#e2e8f0; --muted:#475569;
-      --text:#111827; --accent:#0891b2; --accent-2:#0ea5e9; --glow:0 10px 20px rgba(14,165,233,.15);
-      --radius:18px; --ring:0 0 0 2px var(--line);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,Helvetica,sans-serif; background:var(--bg); color:var(--text); line-height:1.6;}
-    a{color:inherit; text-decoration:none}
-    img{max-width:100%; display:block}
-    .wrap{max-width:1160px; margin:0 auto; padding:0 20px}
-    .btn{display:inline-flex; gap:.6rem; align-items:center; padding:.85rem 1.1rem; border-radius:12px; border:1px solid var(--line); background:linear-gradient(180deg, var(--bg-2), var(--card)); box-shadow:var(--ring); transition:.2s transform, .3s box-shadow}
-    .btn:hover{transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,0,0,.08)}
-    .btn--accent{border-color:transparent; background:linear-gradient(180deg, var(--accent), var(--accent-2)); color:white; font-weight:700; box-shadow:0 10px 20px rgba(14,165,233,.25)}
-    .chip{display:inline-flex; align-items:center; gap:.5rem; padding:.4rem .7rem; border-radius:999px; border:1px solid var(--line); background:var(--bg-2); font-size:.85rem}
-    header{position:sticky; top:0; z-index:40; backdrop-filter:saturate(140%) blur(8px); background:rgba(255,255,255,0.85); border-bottom:1px solid var(--line)}
-    nav{display:flex; align-items:center; justify-content:space-between; padding:.8rem 0}
-    nav .links{display:flex; gap:1rem; flex-wrap:wrap}
-    nav a{padding:.6rem .8rem; border-radius:10px}
-    nav a:hover{background:var(--bg-2)}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Fazlan Fazeen — AI Automation Portfolio</title>
+<meta name="color-scheme" content="dark" />
+<style>
+  /* ===== THEME TOKENS ===== */
+  :root{
+    --bg:#f9fafb;
+    --bg-2:#ffffff;
+    --card:#ffffff;
+    --line:#e5e7eb;
+    --muted:#6b7280;
+    --text:#111827;
+    --accent:#18c7c7;       /* set to #E91D27 for imperial red */
+    --shadow: 0 10px 30px rgba(0,0,0,.08);
+    --radius:16px; --pad:20px; --max:1180px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  html,body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif}
+  img,video{max-width:100%;display:block}
+  h1,h2,h3{margin:0 0 .55rem 0}
+  p{margin:.5rem 0}
+  a{color:inherit;text-decoration:none}
+  .container{max-width:var(--max);margin:0 auto;padding:0 20px}
 
-    .hero{position:relative; padding:96px 0 56px; background:linear-gradient(180deg, #e0f2fe 0%, #ffffff 100%)}
-    .headline{font-size:clamp(34px, 6vw, 56px); line-height:1.05; font-weight:800; letter-spacing:-.02em; color:#0f172a}
-    .sub{font-size:clamp(16px, 2.6vw, 20px); color:var(--muted)}
-    .hero .cta{display:flex; gap:.8rem; flex-wrap:wrap; margin-top:1.2rem}
+  /* Accent background lines */
+  body::before{
+    content:""; position:fixed; inset:0; z-index:-1;
+    background: /* remove the dark vignette on top for light theme */
+      repeating-linear-gradient(90deg, color-mix(in oklab, var(--accent) 12%, transparent) 0 1px, transparent 1px 110px),
+      repeating-linear-gradient(0deg, color-mix(in oklab, var(--accent) 6%, transparent) 0 1px, transparent 1px 90px),
+      radial-gradient(800px 400px at 20% -10%, color-mix(in oklab, var(--accent) 16%, transparent), transparent 60%),
+      radial-gradient(700px 400px at 80% -10%, #1b59ff18, transparent 55%),
+      var(--bg);
+  }
 
-    section{padding:72px 0; border-top:1px solid var(--line); background:var(--bg)}
-    h2{font-size:clamp(22px, 3vw, 28px); margin:0 0 18px; color:#0f172a}
-    .section-sub{color:var(--muted); margin:0 0 28px}
+  /* ===== HEADER ===== */
+  header{position:sticky;top:0;z-index:50;background:color-mix(in oklab, var(--bg-2) 78%, transparent);backdrop-filter:saturate(120%) blur(8px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+  .links{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{padding:8px 12px;border-radius:999px;color:var(--muted);transition:all .2s ease}
+  .chip:hover{background:var(--line);color:var(--text);transform:translateY(-1px)}
+  .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--text);transition:all .2s ease}
+  .btn:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
+  .btn-primary{background:var(--accent);color:#001b1b;border-color:var(--accent)}
+  .btn-primary:hover{filter:brightness(1.05);transform:translateY(-1px);color:#001b1b}
 
-    .grid{display:grid; gap:16px}
-    .grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
-    .grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
-    @media (max-width:1024px){ .grid-4{grid-template-columns:repeat(2,minmax(0,1fr))} }
-    @media (max-width:780px){ .grid-3,.grid-2,.grid-4{grid-template-columns:1fr} nav .links{display:none} }
+  /* ===== SECTIONS / CARDS ===== */
+  section{padding:100px 0;border-top:1px solid var(--line)}
+  .title{font-size:clamp(22px,3vw,28px);font-weight:800;display:flex;align-items:flex-end;gap:10px}
+  .underline{flex:1;height:1px;background:linear-gradient(90deg,var(--accent),transparent);opacity:.35}
+  .sub{color:var(--muted);max-width:1000px}
 
-    .card{position:relative; border:1px solid var(--line); background:var(--card); border-radius:var(--radius); padding:18px; box-shadow:var(--glow)}
-    .card .kicker{font-size:.8rem; color:var(--muted)}
-    .card h3{margin:.2rem 0 .6rem; font-size:1.15rem; color:#0f172a}
+  .grid{display:grid;gap:18px}
+  .grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  @media (max-width:980px){.grid-2,.grid-3{grid-template-columns:1fr}}
 
-    .tl{position:relative; margin-left:14px}
-    .tl::before{content:""; position:absolute; left:0; top:.5rem; bottom:.5rem; width:2px; background:var(--line)}
-    .tli{position:relative; margin:0 0 22px 18px}
-    .tli::before{content:""; position:absolute; left:-19px; top:.45rem; width:10px; height:10px; border-radius:50%; background:var(--accent)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:var(--pad);box-shadow:var(--shadow);transition:transform .2s ease,border-color .2s ease}
+  .card:hover{transform:translateY(-2px);border-color:color-mix(in oklab, var(--accent) 35%, var(--line))}
+  .badge{display:inline-block;padding:6px 10px;border:1px solid var(--line);border-radius:999px;font-size:12px;color:var(--muted)}
+  .badge.alt{border-color:color-mix(in oklab, var(--accent) 45%, var(--line));color:var(--accent)}
 
-    .skills{display:flex; flex-wrap:wrap; gap:.6rem}
-    .thumb{aspect-ratio:16/10; border-radius:14px; border:1px solid var(--line); overflow:hidden; display:grid; place-items:center; background:#f1f5f9}
-    .thumb svg{width:64px; opacity:.6}
+  /* ===== HERO ===== */
+  .hero{display:grid;gap:30px;grid-template-columns:1.1fr .9fr}
+  @media (max-width:980px){.hero{grid-template-columns:1fr}}
+  .name{font-size:clamp(36px,6vw,56px);font-weight:900;letter-spacing:-0.02em}
+  .tag{color:var(--accent);font-weight:600}
+  .tag::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 2px;
+    background: var(--accent);
+    margin-top: 8px;
+    border-radius: 4px;
+    opacity: 0.8;
+  }
+  .tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}
+  .tile{border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg, var(--bg-2), #f3f4f6);padding:18px;text-align:center;transition: 0.25s ease;}
+  .tile:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 20px rgba(24, 199, 199, 0.1);
+  }
+  .highlights{font-weight:600;color:#87878a}
+  .more-skills{font-size:13px;text-align:center;margin-top:12px;color:var(--muted)}
+  /* ===== REVEAL ANIMATIONS ===== */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease}
+  .reveal.in{opacity:1;transform:translateY(0)}
+  .fade-in{opacity:0;transform:translateY(15px);animation:fadeUp .6s ease forwards}@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
 
-    footer{padding:34px 0; border-top:1px solid var(--line); color:var(--muted); background:#f9fafb}
-    .row{display:flex; gap:18px; align-items:center; flex-wrap:wrap}
-    .right{margin-left:auto}
-  </style>
+  /* ===== SERVICES — INTERACTIVE ===== */
+  .service{display:grid;grid-template-columns:140px 1fr;gap:16px;align-items:start}
+  @media (max-width:640px){.service{grid-template-columns:1fr}}
+  .viz{
+    position:relative; aspect-ratio:1.3/1; border:1px solid var(--line); border-radius:14px;
+    background:radial-gradient(120% 120% at 20% 0%, color-mix(in oklab, var(--accent) 12%, transparent), transparent 60%), #f3f4f6;
+    overflow:hidden;
+  }
+  .viz canvas,.viz img,.viz svg{position:absolute;inset:0;width:100%;height:100%}
+  .viz .hint{position:absolute;bottom:8px;right:10px;font-size:11px;color:var(--muted);background:color-mix(in oklab, var(--bg) 60%, transparent);border:1px solid var(--line);padding:3px 6px;border-radius:999px}
+  .service h3{margin:0}
+  .service .tags{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+  .service ul{margin:8px 0 0 18px;color:var(--muted)}
+  .service .actions{display:flex;gap:8px;margin-top:10px}
+  .btn-ghost{border:1px solid var(--line);background:transparent;padding:8px 10px;border-radius:8px;font-size:12px;color:var(--muted);cursor:pointer}
+  .btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* ===== PROJECTS ===== */
+  .proj h3{font-size:16px;margin-bottom:6px}
+  .proj-meta{color:var(--muted);font-size:13px;margin-bottom:6px}
+  .proj-tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 12px}
+  .linkish{color:var(--accent);border-bottom:1px dotted color-mix(in oklab, var(--accent) 40%, transparent)}
+  .linkish:hover{opacity:.92}
+  .more-wrap{display:flex;justify-content:center;margin-top:12px}
+  .reveal-btn{display:inline-flex;align-items:center;gap:8px}
+
+  /* ===== LIGHTBOX ===== */
+  .lightbox{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(7,9,13,.8);backdrop-filter:blur(4px);padding:20px;z-index:100}
+  .lightbox.open{display:flex;color:var(--text)}
+  .panel{background:var(--bg-2);border:1px solid var(--line);border-radius:20px;max-width:960px;width:100%;overflow:hidden;box-shadow:var(--shadow)}
+  .panel-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line)}
+  .close{display:grid;place-items:center;width:34px;height:34px;border-radius:8px;border:1px solid var(--line);transition:all .18s ease}
+  .close:hover{border-color:var(--accent);color:var(--accent)}
+  .slides{position:relative;background:#f3f4f6;height: 400px;}
+  .slide{display:none;padding:10px}
+  .slide.active{display:block}
+  .controls{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 8px}
+  .controls button{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:color-mix(in oklab, var(--bg) 65%, transparent);color:var(--text)}
+  .controls button:hover{border-color:var(--accent)}
+  .controls{ pointer-events: none; }
+  .controls button{ pointer-events: auto; }
+  .dots{display:flex;gap:6px;justify-content:center;padding:8px}
+  .dot{width:8px;height:8px;border-radius:50%;background:#3b4251}
+  .dot.active{background:var(--accent)}
+  .panel-body{display:grid;gap:16px;padding:16px;border-top:1px solid var(--line)}
+  .panel-aside{display:flex;flex-wrap:wrap;gap:6px}
+
+  /* Resize and contain images/videos in modal */
+.slide img,
+.slide video {
+  max-height: 300px;           /* smaller than full viewport */
+  /* width: 50%; */
+  object-fit: contain;
+  border-radius: 12px;
+  display: block;
+}
+
+/* Keep the panel scrollable and header fixed */
+.lightbox {
+  overflow-y: auto;
+  align-items: flex-start;
+}
+.panel {
+  margin: 40px auto;
+  max-height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+}
+.panel-head {
+  position: sticky;
+  top: 0;
+  background: var(--bg-2);
+  z-index: 10;
+}
+.panel-body {
+  overflow-y: auto;
+  flex: 1;
+}
+.slide img,
+.slide video {
+  max-height: 42vh;       /* smaller, consistent height */
+  max-width: 75%;          /* slightly narrower */
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+  margin: auto;
+  display: block;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+/* Also shrink placeholder images */
+.slide img[src*="placeholder"] {
+  max-height: 30vh;
+  max-width: 60%;
+  opacity: 0.8;
+}
+
+  /* ===== FOOTER ===== */
+  footer{border-top:1px solid var(--line);padding:36px 0;color:var(--muted);text-align:center}
+</style>
 </head>
 <body>
-  <header>
-    <div class="wrap">
-      <nav>
-        <div class="row">
-          <strong>Fazlan</strong>
-          <span class="chip" title="Colombo, Sri Lanka">AI Automation</span>
-        </div>
-        <div class="links">
-          <a href="#about">About</a>
-          <a href="#skills">Skills</a>
-          <a href="#projects">Projects</a>
-          <a href="#services">Services</a>
-          <a href="#contact">Contact</a>
-        </div>
-      </nav>
-    </div>
-  </header>
 
-  <section class="hero" id="home">
-    <div class="wrap">
-      <div class="grid grid-2" style="align-items:center">
+<header>
+  <div class="container nav">
+    <div></div>
+    <nav class="links" aria-label="Primary">
+      <a class="chip" href="#about">About</a>
+      <a class="chip" href="#services">Services</a>
+      <a class="chip" href="#projects">Projects</a>
+      <a class="chip" href="#contact">Message</a>
+    </nav>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <a class="btn" href="https://www.linkedin.com/in/fazlan-fazeen" target="_blank" rel="noreferrer">LinkedIn</a>
+      <a class="btn" href="/Fazlan_Fazeen_CV.pdf" download>CV</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="home">
+  <div class="container hero">
+    <div class="reveal">
+      <h1 class="name fade-in">Fazlan Fazeen</h1>
+      <p class="highlights fade-in" style="animation-delay:0.15s">AI Automation • Data Science • Backend Engineering</p>
+      <p class="tag fade-in" style="animation-delay:0.3s">Automating What’s Next with AI</p>
+      <p class="sub fade-in" style="max-width:60ch;margin-top:10px;animation-delay:0.45s">
+        Building scalable AI-powered workflows that <B>manage the complexity</B>, so people can <b>focus on what matters.</b>  
+      </p>
+      <div class="fade-in" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;animation-delay:0.6s">
+        <a class="btn-primary btn" href="#projects">View projects</a>
+        <a class="btn" href="#about">About</a>
+        <a class="btn" href="/Fazlan_Fazeen_CV.pdf" download>Download CV</a>
+      </div>
+    </div>
+
+    <aside class="card reveal">
+      <div class="tiles" aria-label="Main tools">
+        <div class="tile">n8n</div><div class="tile">Zapier</div>
+        <div class="tile">Power Automate</div><div class="tile">LangChain</div>
+        <div class="tile">LLMs & RAG</div><div class="tile">AWS</div>
+        <div class="tile">FastAPI</div><div class="tile">Docker</div>
+      </div>
+      <p class="more-skills reveal"><b>More:</b> Flask · Django · DynamoDB · Shopify API · Google Workspace · Slack API</p>
+    </aside>
+  </div>
+  
+</section>
+
+<!-- ABOUT & TECH STACK -->
+<section id="about">
+  <div class="container">
+    <div class="title">About & Tech Stack <span class="underline"></span></div>
+    <p class="sub">Building intelligent systems that merge AI, automation, and backend engineering for scalable, measurable outcomes.</p>
+
+    <div class="grid grid-2" style="margin-top:16px">
+      <div class="card reveal"><h3>Core</h3><div class="tags"><span class="badge">Python</span><span class="badge">JavaScript</span><span class="badge">TypeScript</span></div></div>
+      <div class="card reveal"><h3>AI & Frameworks</h3><div class="tags"><span class="badge">Langchain</span><span class="badge">LLMs & RAG</span><span class="badge">Flask</span><span class="badge">FastAPI</span><span class="badge">Django</span></div></div>
+      <div class="card reveal"><h3>Automation</h3><div class="tags"><span class="badge">n8n</span><span class="badge">Zapier</span><span class="badge">Power Automate</span></div></div>
+      <div class="card reveal"><h3>Cloud</h3><div class="tags"><span class="badge">AWS (Lambda, API GW, S3, CloudFront, Amplify, DynamoDB, Cognito)</span><span class="badge">Azure ML</span></div></div>
+      <div class="card reveal"><h3>Data</h3><div class="tags"><span class="badge">MySQL</span><span class="badge">PostgreSQL</span><span class="badge">MongoDB</span><span class="badge">DynamoDB</span></div></div>
+      <div class="card reveal"><h3>MLOps & CI/CD</h3><div class="tags"><span class="badge">SageMaker</span><span class="badge">Docker</span><span class="badge">GitHub Actions</span></div></div>
+    </div>
+    <p class="sub reveal" style="margin-top:16px; text-align:center;">
+      Always learning, experimenting, and refining how AI and automation can create smarter and simpler systems.
+    </p>
+  </div>
+</section>
+
+<!-- SERVICES (interactive visuals + optional GIF demo) -->
+<section id="services">
+  <div class="container">
+    <div class="title">Services <span class="underline"></span></div>
+    <p class="sub">Purpose-built systems that reduce manual work and make teams faster.</p>
+
+    <div class="grid grid-2" style="margin-top:16px">
+      <!-- Automation Systems -->
+      <div class="card service reveal" data-gif="/media/automation.gif">
+        <div class="viz" data-viz="flows">
+          <img src="/media/automation.gif" alt="Automation demo GIF">
+        </div>
         <div>
-          <p class="chip">Automating what's next with AI</p>
-          <h1 class="headline">I design and ship AI-powered automations so teams can focus on what matters.</h1>
-          <p class="sub">Specializing in data workflows, integrations, and agentic tooling across Python, FastAPI, Flask, Django, n8n, Power Automate, and Power BI/Fabric.</p>
-          <div class="cta">
-            <a class="btn btn--accent" href="#contact">Start a project</a>
-            <a class="btn" href="#projects">See work</a>
-          </div>
+          <h3>Automation Systems</h3>
+          <p class="sub">Design, run, and monitor reliable workflows with alerts, retries, and audit trails.</p>
+          <div class="tags"><span class="badge">n8n</span><span class="badge">Zapier</span><span class="badge">Power Automate</span><span class="badge">Queues</span></div>
+          <ul>
+            <li>Recruitment automation across postings to scheduling</li>
+            <li>Finance month-end invoice merging & dispatch for finance teams</li>
+            <li>Role-based dashboards with performance alerts & audit trails</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- AI Assistants & RAG -->
+      <div class="card service reveal" data-gif="/media/rag-demo.gif">
+        <div class="viz" data-viz="flows">
+          <img src="/media/llm.gif" alt="Automation demo GIF">
+        </div>
+        <div>
+          <h3>AI Assistants & RAG</h3>
+          <p class="sub">Domain-aware copilots that use retrieval and tools with safety and observability.</p>
+          <div class="tags"><span class="badge">LangChain</span><span class="badge">OpenAI</span><span class="badge">Vector DB</span></div>
+          <ul>
+            <li>RAG chatbot for lead and operation workflows</li>
+            <li>Document parsers for CVs and invoices (FastAPI endpoints)</li>
+            <li>Prompt routing, evaluation & usage analytics</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Data Engineering -->
+      <div class="card service reveal" data-gif="/media/data-pipe.gif">
+        <div class="viz" data-viz="flows">
+          <img src="/media/engineering.gif" alt="Automation demo GIF">
+        </div>
+        <div>
+          <h3>Data Engineering for Automation</h3>
+          <p class="sub">Clean, validate, and move data with APIs, scraping, and serverless jobs.</p>
+          <div class="tags"><span class="badge">FastAPI</span><span class="badge">Airflow</span><span class="badge">S3/Dynamo</span><span class="badge">Postgres</span></div>
+          <ul>
+            <li>Shopify enrichment combining scraping and APIs</li>
+            <li>Data validation, de-dupe, retry strategies</li>
+            <li>Webhook-driven ETL with queues and serverless workers</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Dashboards & Portals -->
+      <div class="card service reveal" data-gif="/media/dashboard.gif">
+        <div class="viz" data-viz="flows">
+          <img src="/media/portal.gif" alt="Automation demo GIF">
+        </div>
+        <div>
+          <h3>Dashboards & Portals</h3>
+          <p class="sub">Secure web apps for approvals, metrics, and everyday operations.</p>
+          <div class="tags"><span class="badge">Flask</span><span class="badge">OAuth</span><span class="badge">Charts</span></div>
+          <ul>
+            <li>Google OAuth portals for teams and partners</li>
+            <li>Granular roles & permissions</li>
+            <li>Metrics dashboards with clear logging and reporting</li>
+          </ul>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section id="about">
-    <div class="wrap grid grid-2">
-      <div>
-        <h2>About</h2>
-        <p class="section-sub">AI automation consultant focused on turning manual processes into reliable systems. I prototype quickly, validate with stakeholders, and deliver measurable impact.</p>
-        <div class="tl">
-          <div class="tli"><strong>2025 — Now</strong><br/>NexoraAI LLC • AI automation and data workflows.</div>
-          <div class="tli"><strong>2023 — 2025</strong><br/>Automation across hospitality, e-commerce, and recruitment.</div>
-        </div>
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <div class="title">Projects <span class="underline"></span></div>
+    <p class="sub">A selection of automation and AI projects built for real-world reliability and scale.</p>
+
+    <!-- Featured (3) -->
+    <div class="grid grid-3" id="projects-featured" style="margin-top:16px">
+
+      <article class="card proj reveal"
+      data-title="DCV Connect: Multi-Vendor Recruitment Analytics Platform"
+      data-year="2025"
+      data-tags="Flask,OAuth,RBAC,Charts,Analytics"
+      data-desc="Supplier-facing portal to track requisitions, submissions, interviews, offers, placements, and billing with vendor scorecards and a live leaderboard."
+      data-highlights="Auto-ingest submissions from CSV/Sheets/API with de-duplication;Automatic stage classification with SLA/aging alerts;Weekly supplier emails with rank, win-rate, and actions;Reduced consolidation time ~70%;Supplier fill rate up 12–18%;Time to fill down ~20%"
+      data-images="/media/connect.png,/media/connect1.png,/media/connect3.png,/media/connect5.png,/media/connect6.png"
+      data-video="/media/connect-demo.mp4">
+
+      <h3>DCV Connect: Multi-Vendor Recruitment Analytics Platform</h3>
+      <div class="proj-meta">2025</div>
+
+      <p class="sub">
+        Unified supplier view for a high-volume recruiter. Tracks requisitions, submissions, and placements, and surfaces billing and funnel metrics with vendor scorecards and a real-time leaderboard.
+      </p>
+
+      <ul class="sub" style="margin:6px 0 8px 18px">
+        <li>Auto-ingest from CSV/Sheets/API with hygiene checks</li>
+        <li>Stage classification with SLA and aging alerts</li>
+        <li>Weekly supplier emails with rank and actions</li>
+        <li>Measured impact: ~70% time saved, 12–18% higher fill rate, ~20% faster TAT</li>
+      </ul>
+
+      <div class="proj-tags">
+        <span class="badge">Flask</span>
+        <span class="badge">OAuth</span>
+        <span class="badge">RBAC</span>
+        <span class="badge">Charts</span>
+        <span class="badge">Analytics</span>
       </div>
-      <div class="card">
-        <span class="kicker">What I value</span>
-        <h3>Clarity, maintainability, and measurable results</h3>
-        <ul class="muted" style="margin:0; padding-left:18px">
-          <li>Modular, observable services over fragile scripts.</li>
-          <li>Reliable jobs with logs and retries.</li>
-          <li>Up-to-date docs and onboarding paths.</li>
+
+      <a class="linkish open-modal" href="#">Learn more →</a>
+    </article>
+
+
+      
+
+
+      <article class="card proj reveal"
+      data-title="Finance Document Merging Automation Tool"
+      data-year="2025"
+      data-tags="Power Automate,SharePoint,FastAPI,PDF Automation"
+      data-desc="Consolidates monthly PDF packets per candidate by detecting and merging Invoice → GRN → Approval → Timesheet in order, then saves to SharePoint."
+      data-highlights="SharePoint scan with pattern detection and ordered merge;One-click bulk merge and per-candidate merge with start/finish emails;Idempotent runs with skip logic for already-processed folders;Saved 100+ hours/month and near-zero merge errors"
+      data-images="/media/invoices-1.png,/media/invoices-2.png,/media/invoices-3.jpg,/media/invoices-4.jpg">
+
+      <h3>Finance Document Merging Automation Tool</h3>
+      <div class="proj-meta">2025</div>
+
+      <p class="sub">
+        Automated generation of consolidated PDF packets per candidate and month. Detects and merges Invoice, GRN, Approval, and Timesheet in the correct order, then writes back to both the employee folder and a central archive in SharePoint.
+      </p>
+
+      <ul class="sub" style="margin:6px 0 8px 18px">
+        <li>SharePoint scan, pattern detection, ordered merge, and rename</li>
+        <li>Bulk and individual merge with start/finish email alerts</li>
+        <li>Idempotent runs with skip logic for already-processed folders</li>
+        <li>Impact: 100+ hours/month saved and consistent audit-ready outputs</li>
+      </ul>
+
+      <div class="proj-tags">
+        <span class="badge">Power Automate</span>
+        <span class="badge">SharePoint</span>
+        <span class="badge">FastAPI</span>
+        <span class="badge">PDF Automation</span>
+      </div>
+
+      <a class="linkish open-modal" href="#">Learn more →</a>
+    </article>
+
+
+
+      <article class="card proj reveal"
+      data-title="Nexus RMS — Rent Management System"
+      data-year="2025"
+      data-tags="FastAPI,PostgreSQL,Docx + E-sign,Chart.js,SharePoint/Drive"
+      data-desc="Landlord suite to manage properties, units, tenants, leases, expenses, and receivables with clear monthly profitability and arrears visibility."
+      data-highlights="Lease e-contract generation and renewal notices;Automated rent invoicing, reminders, and late-fee logic;Expense ingestion and unit-level allocation;Accrual vs cash dashboards and arrears tracking;Reduced late payments ~30%;Saved ~8–12 hrs/month per 20 units;Vacancy days down ~10–15%"
+      data-images="/media/proj3.png,/media/proj3-1.png">
+
+      <h3>Nexus RMS — Rent Management System</h3>
+      <div class="proj-meta">2025</div>
+
+      <p class="sub">
+        End to end rent and contract operations for landlords. Manage leases, payments, expenses, and reporting with monthly P&L and arrears visibility.
+      </p>
+
+      <ul class="sub" style="margin:6px 0 8px 18px">
+        <li>Lease e-contract generation and renewal notices</li>
+        <li>Automated rent invoicing, reminders, and late-fee logic</li>
+        <li>Expense ingestion and unit-level allocation</li>
+        <li>Impact: ~30% fewer late payments, ~8–12 hrs/month saved per 20 units, vacancy days down ~10–15%</li>
+      </ul>
+
+      <div class="proj-tags">
+        <span class="badge">FastAPI</span>
+        <span class="badge">PostgreSQL</span>
+        <span class="badge">Docx + E-sign</span>
+        <span class="badge">Chart.js</span>
+        <span class="badge">SharePoint/Drive</span>
+      </div>
+
+      <a class="linkish open-modal" href="#">Learn more →</a>
+    </article>
+
+    </div>
+
+    <!-- More (10) -->
+    <div class="grid grid-3" id="projects-more" style="display:none">
+      <article class="card proj reveal"
+        data-title="Sales Pipeline Tracker"
+        data-year="2025"
+        data-tags="Dash/React,PostgreSQL,n8n,Gmail/Sheets,Chart.js"
+        data-desc="Real-time pipeline and account tracking with consultant workload, activity, touchpoints, and conversion analytics for precise forecasting."
+        data-highlights="Auto-sync leads from forms, emails, and imports with duplicate detection;Automatic stage timestamps and SLA nudges for idle deals;Weekly forecast rollups and KPI snapshots to leadership;Forecast error reduced by ~15–25% after 2 cycles;Rep activity visibility improved touchpoints by +22%;Manual reporting time cut by ~70%"
+        data-images="/media/proj4.png,/media/proj4-1.png">
+
+        <h3>Sales Pipeline Tracker</h3>
+        <div class="proj-meta">2025</div>
+
+        <p class="sub">
+          Real-time CRM analytics system to track accounts, pipelines, consultant workloads, and conversions — built for precise forecasting and visibility.
+        </p>
+
+        <ul class="sub" style="margin:6px 0 8px 18px">
+          <li>Auto-sync leads from forms, emails, and imports with de-duplication</li>
+          <li>Automatic stage timestamps and SLA nudges for idle deals</li>
+          <li>Weekly forecast rollups and KPI snapshots to leadership</li>
+          <li>Impact: forecast error reduced ~15–25%, manual reporting cut ~70%</li>
         </ul>
-      </div>
-    </div>
-  </section>
 
-  <section id="skills">
-    <div class="wrap">
-      <h2>Skills</h2>
-      <p class="section-sub">Constantly exploring and learning to deliver more value every sprint.</p>
-      <div class="grid grid-4">
-        <div class="card"><span class="kicker">Core</span><h3>Python & Web</h3><div class="skills"><span class="chip">Python</span><span class="chip">FastAPI</span><span class="chip">Flask</span><span class="chip">Django</span></div></div>
-        <div class="card"><span class="kicker">Automation</span><h3>Workflows</h3><div class="skills"><span class="chip">n8n</span><span class="chip">Power Automate</span><span class="chip">Zapier</span></div></div>
-        <div class="card"><span class="kicker">Data</span><h3>Analytics</h3><div class="skills"><span class="chip">Power BI</span><span class="chip">Fabric</span><span class="chip">SQL</span></div></div>
-        <div class="card"><span class="kicker">DevOps</span><h3>Platforms</h3><div class="skills"><span class="chip">AWS</span><span class="chip">Azure</span><span class="chip">Docker</span></div></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="projects">
-    <div class="wrap">
-      <h2>Projects</h2>
-      <div class="grid grid-3">
-        <div class="card"><div class="thumb"></div><h3>Shopify Enrichment Bot</h3><p class="muted">Lambda to enrich supplier descriptions and sync with Shopify API.</p></div>
-        <div class="card"><div class="thumb"></div><h3>Sales Proposal Portal</h3><p class="muted">Email-to-proposal automation with SharePoint and Logic Apps.</p></div>
-        <div class="card"><div class="thumb"></div><h3>Real-Time Interview Assistant</h3><p class="muted">Streamlit app for candidate evaluation and insights.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="services">
-    <div class="wrap">
-      <h2>Services</h2>
-      <div class="grid grid-3">
-        <div class="card"><strong>Automation & Integrations</strong><p class="muted">API and workflow builds with safe retries and logs.</p></div>
-        <div class="card"><strong>Data Apps & Dashboards</strong><p class="muted">Power BI/Fabric semantic models and visual dashboards.</p></div>
-        <div class="card"><strong>Process Discovery</strong><p class="muted">Audit and roadmap for the next automation opportunity.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="contact">
-    <div class="wrap grid grid-2">
-      <div>
-        <h2>Contact</h2>
-        <p class="section-sub">Have a workflow to automate or dashboard to build?</p>
-        <div class="row" style="gap:10px">
-          <a class="btn btn--accent" href="mailto:fazlanfazeen786@gmail.com">Email me</a>
-          <a class="btn" href="https://www.linkedin.com/in/fazlan-fazeen" target="_blank">LinkedIn</a>
+        <div class="proj-tags">
+          <span class="badge">Dash/React</span>
+          <span class="badge">PostgreSQL</span>
+          <span class="badge">n8n</span>
+          <span class="badge">Gmail/Sheets</span>
+          <span class="badge">Chart.js</span>
         </div>
-      </div>
-      <form class="card" onsubmit="event.preventDefault(); alert('Thanks! I will reply soon.');">
-        <h3>Quick note</h3>
-        <input required name="email" type="email" placeholder="you@company.com" style="width:100%; padding:.9rem; border-radius:12px; border:1px solid var(--line); margin:.4rem 0 10px" />
-        <textarea required name="msg" rows="4" placeholder="What do you want to automate?" style="width:100%; padding:.9rem; border-radius:12px; border:1px solid var(--line); margin:.4rem 0 14px"></textarea>
-        <button class="btn btn--accent" type="submit">Send</button>
-      </form>
-    </div>
-  </section>
 
-  <footer>
-    <div class="wrap row"><span>© <span id="yr"></span> Fazlan Fazeen</span><span class="right">Built with HTML/CSS</span></div>
-  </footer>
-  <script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+        <a class="linkish open-modal" href="#">Learn more →</a>
+      </article>
+
+
+      <article class="card proj" data-title="Carbon Footprint & Supply Chain Optimizer (SaaS)" data-year="2025" data-tags="FastAPI,Flask,AWS" data-desc="SaaS analytics app for sustainability metrics." data-highlights="Multi-tenant;RBAC" data-images="/media/carbon-1.png">
+        <h3>Carbon Footprint & Supply Chain Optimizer (SaaS)</h3><div class="proj-meta">2025</div><p class="sub">SaaS analytics app for sustainability metrics.</p><div class="proj-tags"><span class="badge">FastAPI</span><span class="badge">Flask</span><span class="badge">AWS</span></div><a class="linkish open-modal" href="#">Learn more →</a>
+      </article>
+
+      <article class="card proj" data-title="Shopify Product Enrichment Tool" data-year="2024" data-tags="Python,Scrapy/Playwright,Shopify API" data-desc="Automated enrichment of catalog data via scraping + Shopify API." data-highlights="Data quality rules;Retry & dedupe" data-images="/media/shopify-1.png,/media/shopify-2.png" data-video="/media/shopify-demo.mp4">
+        <h3>Shopify Product Enrichment Tool</h3><div class="proj-meta">2024</div><p class="sub">Automated enrichment of catalog data via scraping + API.</p><div class="proj-tags"><span class="badge">Python</span><span class="badge">Scrapy/Playwright</span><span class="badge">Shopify API</span></div><a class="linkish open-modal" href="#">Learn more →</a>
+      </article>
+
+      <article class="card proj" data-title="LeadGen Ops Platform (Email → Tele → Slack)" data-year="2024" data-tags="Flask,FastAPI,n8n,Slack API" data-desc="Lead gen + emailing + tele-verification with Slack alerts." data-highlights="Role-based dashboards;Traceability" data-images="/media/leadgen-1.png">
+        <h3>LeadGen Ops Platform (Email → Tele → Slack)</h3><div class="proj-meta">2024</div><p class="sub">Leadgen, emailing & tele-verification with Slack alerts.</p><div class="proj-tags"><span class="badge">Flask</span><span class="badge">FastAPI</span><span class="badge">n8n</span><span class="badge">Slack API</span></div><a class="linkish open-modal" href="#">Learn more →</a>
+      </article>
+
+      <article class="card proj" data-title="Enterprise Dashboards w/ Google Sign-In" data-year="2024" data-tags="Flask,OAuth2,Google Workspace" data-desc="Secure dashboards with Google OAuth and granular access." data-highlights="SSO;Least-privilege" data-images="/media/oauth-1.png">
+        <h3>Enterprise Dashboards w/ Google Sign-In</h3><div class="proj-meta">2024</div><p class="sub">Secure dashboards with OAuth and roles.</p><div class="proj-tags"><span class="badge">Flask</span><span class="badge">OAuth2</span><span class="badge">Google Workspace</span></div><a class="linkish open-modal" href="#">Learn more →</a>
+      </article>
+
+      <article class="card proj" data-title="AWS Serverless Deployment Pipeline" data-year="2024" data-tags="Lambda,API GW,S3,CloudFront,Amplify,GitHub Actions" data-desc="Multi-service deploys with IaC + CI/CD." data-highlights="Blue/green;Secrets mgmt" data-images="/media/aws-1.png">
+        <h3>AWS Serverless Deployment Pipeline</h3><div class="proj-meta">2024</div><p class="sub">Multi-service deploys with IaC + CI/CD.</p><div class="proj-tags"><span class="badge">Lambda</span><span class="badge">API GW</span><span class="badge">S3</span><span class="badge">CloudFront</span><span class="badge">Amplify</span><span class="badge">GitHub Actions</span></div><a class="linkish open-modal" href="#">Learn more →</a>
+      </article>
+
+      <!-- 4 generic slots -->
+      <article class="card proj" data-title="Project Slot" data-year="—" data-tags="" data-desc="Add your next project here." data-highlights="" data-images=""><h3>Project Slot</h3><div class="proj-meta">—</div><p class="sub">Add your next project here.</p><a class="linkish open-modal" href="#">Learn more →</a></article>
+      <article class="card proj" data-title="Project Slot" data-year="—" data-tags="" data-desc="Add your next project here." data-highlights="" data-images=""><h3>Project Slot</h3><div class="proj-meta">—</div><p class="sub">Add your next project here.</p><a class="linkish open-modal" href="#">Learn more →</a></article>
+      <article class="card proj" data-title="Project Slot" data-year="—" data-tags="" data-desc="Add your next project here." data-highlights="" data-images=""><h3>Project Slot</h3><div class="proj-meta">—</div><p class="sub">Add your next project here.</p><a class="linkish open-modal" href="#">Learn more →</a></article>
+      <article class="card proj" data-title="Project Slot" data-year="—" data-tags="" data-desc="Add your next project here." data-highlights="" data-images=""><h3>Project Slot</h3><div class="proj-meta">—</div><p class="sub">Add your next project here.</p><a class="linkish open-modal" href="#">Learn more →</a></article>
+    </div>
+
+    <div class="more-wrap">
+      <button class="btn reveal-btn" id="reveal-more" aria-expanded="false">
+        <span id="reveal-text">Show 10 more projects</span> <span>↓</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- MESSAGE -->
+<section id="contact">
+  <div class="container">
+    <div class="title">Message <span class="underline"></span></div>
+    <form class="card reveal" onsubmit="sendMail(event)">
+      <div style="display:grid;gap:10px;grid-template-columns:1fr 1fr">
+        <input required placeholder="Your name" id="n" style="padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--text)">
+        <input required type="email" placeholder="Your email" id="e" style="padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--text)">
+      </div>
+      <textarea required placeholder="Message" id="m" rows="7" style="margin-top:10px;width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--text)"></textarea>
+      <div style="display:flex;gap:10px;margin-top:10px">
+        <button class="btn-primary btn" type="submit">Send message</button>
+        <a class="btn" href="mailto:fazlanfazeen786@gmail.com">Or email directly</a>
+      </div>
+    </form>
+  </div>
+</section>
+
+<footer>© <span id="yr"></span> Fazlan Fazeen. All rights reserved.</footer>
+
+<!-- LIGHTBOX -->
+<div id="lb" class="lightbox" role="dialog" aria-modal="true">
+  <div class="panel">
+    <div class="panel-head">
+      <div><b id="lb-title"></b> <span class="sub">· <span id="lb-year"></span></span></div>
+      <button class="close" id="lb-close" aria-label="Close">✕</button>
+    </div>
+    <div class="slides">
+      <div id="lb-slides"></div>
+      <div class="controls">
+        <button id="lb-prev" aria-label="Previous">‹</button>
+        <button id="lb-next" aria-label="Next">›</button>
+      </div>
+      <div class="dots" id="lb-dots"></div>
+    </div>
+    <div class="panel-body">
+      <div>
+        <p class="sub" id="lb-desc"></p>
+        <ul class="sub" id="lb-highlights" style="margin-left:18px"></ul>
+      </div>
+      <aside class="panel-aside" id="lb-tags"></aside>
+    </div>
+  </div>
+</div>
+
+<script>
+  // year
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // scroll-reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  }, {threshold:.12});
+  revealEls.forEach(el=>io.observe(el));
+
+  // show more/fewer
+  const moreBtn = document.getElementById('reveal-more');
+  const moreText = document.getElementById('reveal-text');
+  const moreGrid = document.getElementById('projects-more');
+  function setMore(open){
+    moreGrid.style.display = open ? 'grid' : 'none';
+    moreBtn.setAttribute('aria-expanded', String(open));
+    moreText.textContent = open ? 'Show fewer' : `Show ${moreGrid.children.length} more projects`;
+    (open ? moreGrid : document.getElementById('projects-featured'))
+      .scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+  setMore(false);
+  moreBtn.addEventListener('click', ()=> setMore(moreBtn.getAttribute('aria-expanded') !== 'true'));
+
+  // message form
+  function sendMail(e){
+    e.preventDefault();
+    const name = document.getElementById('n').value.trim();
+    const email = document.getElementById('e').value.trim();
+    const msg = document.getElementById('m').value.trim();
+    const subject = encodeURIComponent(`Portfolio inquiry from ${name}`);
+    const body = encodeURIComponent(`${msg}\n\n— ${name} (${email})`);
+    window.location.href = `mailto:fazlanfazeen786@gmail.com?subject=${subject}&body=${body}`;
+  }
+
+  // services: swap animated SVG <-> GIF on click/hover
+  document.querySelectorAll('.service').forEach(card=>{
+    const btn = card.querySelector('[data-action="toggle-gif"]');
+    if (!btn) return; // Skip cards that don't have a toggle button
+
+    const viz = card.querySelector('.viz');
+    const initialVizHTML = viz.innerHTML; // Store the initial SVG state
+    const gif = card.getAttribute('data-gif');
+    let showingGif = false;
+
+    function toGif(){
+      if(!gif || showingGif) return;
+      viz.innerHTML = `<img src="${gif}" alt="demo gif"> <span class="hint">click to stop</span>`;
+      showingGif = true;
+    }
+    function toSvg(){
+      if(!showingGif) return;
+      viz.innerHTML = initialVizHTML; // Restore the saved SVG
+      showingGif = false;
+    }
+    btn?.addEventListener('click', ()=> showingGif ? toSvg() : toGif());
+    viz.addEventListener('mouseenter', ()=>{ viz.style.transform='scale(1.01)'; viz.style.transition='transform .25s ease'; });
+    viz.addEventListener('mouseleave', ()=>{ viz.style.transform='scale(1)'; });
+  });
+
+  // Lightbox builder
+  const lb      = document.getElementById('lb');
+  const lbTitle = document.getElementById('lb-title');
+  const lbYear  = document.getElementById('lb-year');
+  const lbDesc  = document.getElementById('lb-desc');
+  const lbTags  = document.getElementById('lb-tags');
+  const lbHl    = document.getElementById('lb-highlights');
+  const lbSlides= document.getElementById('lb-slides');
+  const lbDots  = document.getElementById('lb-dots');
+  const lbClose = document.getElementById('lb-close');
+  const prevBtn = document.getElementById('lb-prev');
+  const nextBtn = document.getElementById('lb-next');
+  let slideIdx = 0;
+
+  function openLB(card){
+    lbTitle.textContent = card.dataset.title || '';
+    lbYear.textContent  = card.dataset.year || '';
+    lbDesc.textContent  = card.dataset.desc || '';
+    lbTags.innerHTML=''; (card.dataset.tags||'').split(',').map(s=>s.trim()).filter(Boolean).forEach(t=>{
+      const b=document.createElement('span'); b.className='badge alt'; b.textContent=t; lbTags.appendChild(b);
+    });
+    lbHl.innerHTML=''; (card.dataset.highlights||'').split(';').map(s=>s.trim()).filter(Boolean).forEach(h=>{
+      const li=document.createElement('li'); li.textContent=h; lbHl.appendChild(li);
+    });
+
+    lbSlides.innerHTML=''; lbDots.innerHTML=''; slideIdx=0;
+    const slides=[]; const video=(card.dataset.video||'').trim();
+    if(video) slides.push({type:'video',src:video});
+    (card.dataset.images||'').split(',').map(s=>s.trim()).filter(Boolean).forEach(src=>slides.push({type:'image',src}));
+    if(slides.length===0) slides.push({type:'image',src:'/media/placeholder.png'});
+    slides.forEach((sl,i)=>{
+      const wrap=document.createElement('div'); wrap.className='slide'+(i===0?' active':'');
+      if (sl.type === 'video') {
+        const v = document.createElement('video');
+        v.setAttribute('controls', 'controls');
+        v.setAttribute('playsinline', 'playsinline');
+        v.setAttribute('preload', 'metadata');
+        v.style.maxHeight = '60vh';
+        v.style.width = '100%';
+        v.style.borderRadius = '10px';
+
+        const src = document.createElement('source');
+        src.src = sl.src;
+        src.type = 'video/mp4';
+
+        v.appendChild(src);
+        wrap.appendChild(v);
+      } else { const img=document.createElement('img'); img.src=sl.src; img.alt=lbTitle.textContent; img.style.maxHeight='60vh'; img.style.width='100%'; img.style.objectFit='contain'; img.style.borderRadius='10px'; wrap.appendChild(img);}
+      lbSlides.appendChild(wrap);
+      const dot=document.createElement('div'); dot.className='dot'+(i===0?' active':''); dot.addEventListener('click',()=>go(i)); lbDots.appendChild(dot);
+    });
+    lb.classList.add('open');
+  }
+  function closeLB(){ lb.classList.remove('open'); lb.querySelectorAll('video').forEach(v=>{v.pause(); v.currentTime=0;}); }
+  function go(i){
+    const slides=lbSlides.querySelectorAll('.slide');
+    slides.forEach(s=>s.classList.remove('active'));
+    slides[i].classList.add('active');
+    lbDots.querySelectorAll('.dot').forEach((d,idx)=>d.classList.toggle('active', idx===i));
+    slideIdx=i;
+  }
+  prevBtn.addEventListener('click',()=>{const n=(slideIdx-1+lbSlides.children.length)%lbSlides.children.length; go(n);});
+  nextBtn.addEventListener('click',()=>{const n=(slideIdx+1)%lbSlides.children.length; go(n);});
+  lbClose.addEventListener('click',closeLB);
+  lb.addEventListener('click',(e)=>{ if(e.target===lb) closeLB(); });
+  document.querySelectorAll('.open-modal').forEach(a=>{
+    a.addEventListener('click',(e)=>{ e.preventDefault(); const card=a.closest('.proj'); if(card) openLB(card); });
+  });
+</script>
 </body>
 </html>

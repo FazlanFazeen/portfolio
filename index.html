@@ -118,78 +118,113 @@
   .linkish:hover{opacity:.92}
   .more-wrap{display:flex;justify-content:center;margin-top:12px}
   .reveal-btn{display:inline-flex;align-items:center;gap:8px}
-
+  
   /* ===== LIGHTBOX ===== */
   .lightbox{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(7,9,13,.8);backdrop-filter:blur(4px);padding:20px;z-index:100}
   .lightbox.open{display:flex;color:var(--text)}
-  .panel{background:var(--bg-2);border:1px solid var(--line);border-radius:20px;max-width:960px;width:100%;overflow:hidden;box-shadow:var(--shadow)}
-  .panel-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line)}
   .close{display:grid;place-items:center;width:34px;height:34px;border-radius:8px;border:1px solid var(--line);transition:all .18s ease}
   .close:hover{border-color:var(--accent);color:var(--accent)}
-  .slides{position:relative;background:#f3f4f6;height: 400px;}
-  .slide{display:none;padding:10px}
-  .slide.active{display:block}
   .controls{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;padding:0 8px}
   .controls button{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:color-mix(in oklab, var(--bg) 65%, transparent);color:var(--text)}
   .controls button:hover{border-color:var(--accent)}
   .controls{ pointer-events: none; }
   .controls button{ pointer-events: auto; }
-  .dots{display:flex;gap:6px;justify-content:center;padding:8px}
-  .dot{width:8px;height:8px;border-radius:50%;background:#3b4251}
-  .dot.active{background:var(--accent)}
-  .panel-body{display:grid;gap:16px;padding:16px;border-top:1px solid var(--line)}
   .panel-aside{display:flex;flex-wrap:wrap;gap:6px}
-
-  /* Resize and contain images/videos in modal */
-.slide img,
-.slide video {
-  max-height: 300px;           /* smaller than full viewport */
-  /* width: 50%; */
-  object-fit: contain;
-  border-radius: 12px;
-  display: block;
+  
+  /* LIGHTBOX sizing */
+  .panel{
+    margin:40px auto;
+    max-height:90vh;              /* whole modal stays on screen */
+    display:flex; flex-direction:column;
+    background:var(--bg-2);border:1px solid var(--line);border-radius:20px;max-width:960px;width:100%;overflow:hidden;box-shadow:var(--shadow)
+  }
+  .panel-head{ position:sticky; top:0; background:var(--bg-2); z-index:10; display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line); }
+  
+/* SLIDE: fixed view height, centers content */
+.slides{
+  position: relative;
+  background:#f3f4f6;
+  height: clamp(280px, 46vh, 520px);
+  padding-bottom: 40px;     /* room for dots */
+  overflow: hidden;         /* keep letterbox bars inside */
 }
-
-/* Keep the panel scrollable and header fixed */
-.lightbox {
-  overflow-y: auto;
-  align-items: flex-start;
+.slide{
+  display: none;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
 }
-.panel {
-  margin: 40px auto;
-  max-height: calc(100vh - 80px);
+.slide.active{
   display: flex;
-  flex-direction: column;
-}
-.panel-head {
-  position: sticky;
-  top: 0;
-  background: var(--bg-2);
-  z-index: 10;
-}
-.panel-body {
-  overflow-y: auto;
-  flex: 1;
-}
-.slide img,
-.slide video {
-  max-height: 42vh;       /* smaller, consistent height */
-  max-width: 75%;          /* slightly narrower */
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  border-radius: 12px;
-  margin: auto;
-  display: block;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  align-items: center;
+  justify-content: center;
 }
 
-/* Also shrink placeholder images */
-.slide img[src*="placeholder"] {
-  max-height: 30vh;
-  max-width: 60%;
-  opacity: 0.8;
+/* ✅ Never crop: scale down by BOTH dimensions */
+.slide img,
+.slide video,
+.lb-media{
+  max-height: 280px;        /* Set a specific max height in pixels */
+  max-width: 100%;
+  object-fit: contain;      /* extra safety */
+  border-radius: 12px;
+  display: block;
+  box-shadow: 0 4px 20px rgba(0,0,0,.08);
 }
+
+/* smaller placeholder */
+.slide img[src*="placeholder"]{
+  max-height: 70%;
+  max-width: 80%;
+  opacity: .85;
+}
+
+  .dots{ position:absolute; bottom:8px; left:0; right:0; display:flex; gap:6px; justify-content:center; padding:8px; }
+  .dot{ width:8px; height:8px; border-radius:50%; background:#3b4251; }
+  .dot.active{ background:var(--accent); }
+  
+  .panel-body{ overflow:auto; flex:1; display:grid;gap:16px;padding:16px;border-top:1px solid var(--line); }   /* text scrolls, header stays fixed */
+  
+  /* Optional: slightly smaller on phones */
+  @media (max-width:640px){
+    .slides{ height:40vh; }
+  }
+
+/* ===== ZOOM FUNCTIONALITY ===== */
+.slide img {
+  cursor: zoom-in;
+  transition: max-width 0.3s ease, max-height 0.3s ease;
+}
+.slide img.zoomed {
+  max-height: 700px;        /* Set a specific zoomed max height in pixels */
+  max-width: 90vw;          /* Keep viewport width for wide images */
+  cursor: zoom-out;
+}
+
+/* ===== FULLSCREEN VIEWER ===== */
+.fs-viewer{
+  position:fixed; inset:0; z-index:200;
+  background:rgba(10,10,15,.6);
+  backdrop-filter:blur(12px);
+  display:flex; align-items:center; justify-content:center;
+  opacity:0; visibility:hidden; transition:opacity .3s ease, visibility .3s ease;
+}
+.fs-viewer.open{ opacity:1; visibility:visible; }
+.fs-viewer img{ max-width:90vw; max-height:90vh; object-fit:contain; box-shadow:0 0 60px rgba(0,0,0,.4); }
+.fs-viewer .btn-fs{
+  position:absolute;
+  display:grid; place-items:center;
+  width:44px; height:44px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.2);
+  background:rgba(0,0,0,.3);
+  color:white; font-size:24px;
+  cursor:pointer;
+}
+.fs-viewer .btn-fs:hover{ background:rgba(0,0,0,.5); }
+.fs-viewer .fs-close{ top:20px; right:20px; }
+.fs-viewer .fs-prev{ left:20px; }
+.fs-viewer .fs-next{ right:20px; }
 
   /* ===== FOOTER ===== */
   footer{border-top:1px solid var(--line);padding:36px 0;color:var(--muted);text-align:center}
@@ -235,7 +270,7 @@
         <div class="tile">n8n</div><div class="tile">Zapier</div>
         <div class="tile">Power Automate</div><div class="tile">LangChain</div>
         <div class="tile">LLMs & RAG</div><div class="tile">AWS</div>
-        <div class="tile">FastAPI</div><div class="tile">Docker</div>
+        <div class="tile">FastAPI</div><div class="tile">Github CI/CD</div>
       </div>
       <p class="more-skills reveal"><b>More:</b> Flask · Django · DynamoDB · Shopify API · Google Workspace · Slack API</p>
     </aside>
@@ -351,7 +386,7 @@
     <div class="grid grid-3" id="projects-featured" style="margin-top:16px">
 
       <article class="card proj reveal"
-      data-title="DCV Connect: Multi-Vendor Recruitment Analytics Platform"
+      data-title="Connect: Multi-Vendor Recruitment Analytics Platform"
       data-year="2025"
       data-tags="Flask,OAuth,RBAC,Charts,Analytics"
       data-desc="Supplier-facing portal to track requisitions, submissions, interviews, offers, placements, and billing with vendor scorecards and a live leaderboard."
@@ -359,7 +394,7 @@
       data-images="/media/connect.png,/media/connect1.png,/media/connect3.png,/media/connect5.png,/media/connect6.png"
       data-video="/media/connect-demo.mp4">
 
-      <h3>DCV Connect: Multi-Vendor Recruitment Analytics Platform</h3>
+      <h3>Connect: Multi-Vendor Recruitment Analytics Platform</h3>
       <div class="proj-meta">2025</div>
 
       <p class="sub">
@@ -458,7 +493,7 @@
     </div>
 
     <!-- More (10) -->
-    <div class="grid grid-3" id="projects-more" style="display:none">
+    <div class="grid grid-3" id="projects-more" style="display:none; margin-top: 18px;">
       <article class="card proj reveal"
         data-title="Sales Pipeline Tracker"
         data-year="2025"
@@ -493,31 +528,183 @@
       </article>
 
 
-      <article class="card proj" data-title="Carbon Footprint & Supply Chain Optimizer (SaaS)" data-year="2025" data-tags="FastAPI,Flask,AWS" data-desc="SaaS analytics app for sustainability metrics." data-highlights="Multi-tenant;RBAC" data-images="/media/carbon-1.png">
-        <h3>Carbon Footprint & Supply Chain Optimizer (SaaS)</h3><div class="proj-meta">2025</div><p class="sub">SaaS analytics app for sustainability metrics.</p><div class="proj-tags"><span class="badge">FastAPI</span><span class="badge">Flask</span><span class="badge">AWS</span></div><a class="linkish open-modal" href="#">Learn more →</a>
+      <article class="card proj reveal"
+  data-title="Recruitment Consultant Progress Tracker"
+  data-year="2025"
+  data-tags="Power BI / Fabric,SQL,n8n/Zapier,GSheets"
+  data-desc="Performance analytics per consultant with CV→Interview→Offer→Placement funnels, leaderboards, and revenue contribution analysis."
+  data-highlights="Auto-capture stage changes from ATS/email;Placement–billing linkage for revenue attribution;Monthly performance digests with peer benchmarks;Placement rate uplift ~10–14% via targeted coaching;Revenue attribution clarified incentives and morale;Team lead reporting time reduced ~60%"
+  data-images="/media/proj5.png,/media/proj5-1.png,/media/proj5-2.png">
+
+  <h3>Recruitment Consultant Progress Tracker</h3>
+  <div class="proj-meta">2025</div>
+
+  <p class="sub">
+    Consultant-level performance with funnel views (CV → Interview → Offer → Placement), leaderboards, and revenue attribution tied to billing.
+  </p>
+
+  <ul class="sub" style="margin:6px 0 8px 18px">
+    <li>Auto-capture stage changes from ATS/email; normalized per consultant</li>
+    <li>Placement ↔ billing linkage for revenue attribution</li>
+    <li>Monthly digests with peer benchmarks and coaching insights</li>
+    <li>Impact: ~10–14% placement uplift, clearer incentives, ~60% less reporting time</li>
+  </ul>
+
+  <div class="proj-tags">
+    <span class="badge">Power BI / Fabric</span>
+    <span class="badge">SQL</span>
+    <span class="badge">n8n / Zapier</span>
+    <span class="badge">GSheets</span>
+  </div>
+
+  <a class="linkish open-modal" href="#">Learn more →</a>
+</article>
+
+
+
+      <article class="card proj reveal"
+        data-title="Role Assignment Tracker (RBAC System)"
+        data-year="2025"
+        data-tags="Flask/Dash,PostgreSQL,RBAC,Audit Logs"
+        data-desc="Centralized the management of roles, permissions, and KPIs—replacing dozens of spreadsheets with a governed, auditable, and scalable system."
+        data-highlights="Automated role provisioning and de-provisioning with audit logs;Auto-calculated KPIs and priority queues per consultant or role;Data validation and deduplication to prevent drift;Reduced access errors to near-zero;Faster onboarding (<1 day);Eliminated version conflicts saving ~6–10 hrs/week;Improved compliance with traceable change history"
+        data-images="/media/proj6.png">
+
+        <h3>Role Assignment Tracker (RBAC System)</h3>
+        <div class="proj-meta">2025</div>
+
+        <p class="sub">
+          Unified platform to manage user roles, permissions, and KPIs with built-in governance, validations, and full audit traceability.
+        </p>
+
+        <ul class="sub" style="margin:6px 0 8px 18px">
+          <li>Automated role provisioning and de-provisioning with logs</li>
+          <li>Auto-calculated KPIs and priority queues by consultant/role</li>
+          <li>Data validation and deduplication to prevent drift</li>
+          <li>Impact: near-zero access errors, ~6–10 hrs/week saved, faster onboarding</li>
+        </ul>
+
+        <div class="proj-tags">
+          <span class="badge">Flask/Dash</span>
+          <span class="badge">PostgreSQL</span>
+          <span class="badge">RBAC</span>
+          <span class="badge">Audit Logs</span>
+        </div>
+
+        <a class="linkish open-modal" href="#">Learn more →</a>
       </article>
 
-      <article class="card proj" data-title="Shopify Product Enrichment Tool" data-year="2024" data-tags="Python,Scrapy/Playwright,Shopify API" data-desc="Automated enrichment of catalog data via scraping + Shopify API." data-highlights="Data quality rules;Retry & dedupe" data-images="/media/shopify-1.png,/media/shopify-2.png" data-video="/media/shopify-demo.mp4">
-        <h3>Shopify Product Enrichment Tool</h3><div class="proj-meta">2024</div><p class="sub">Automated enrichment of catalog data via scraping + API.</p><div class="proj-tags"><span class="badge">Python</span><span class="badge">Scrapy/Playwright</span><span class="badge">Shopify API</span></div><a class="linkish open-modal" href="#">Learn more →</a>
+
+      <article class="card proj reveal"
+        data-title="Inventory Dashboard"
+        data-year="2025"
+        data-tags="Python,Pandas,Power BI,SellerCloud Exports"
+        data-desc="Robust pipeline to ingest, clean, and normalize large Excel exports from SellerCloud and visualize stock health, sales velocity, and supplier performance."
+        data-highlights="Schema normalization, deduplication, unit conversions, and category mapping;Exception flagging for OOS risk, stale SKUs, and margin alerts;Scheduled refresh with automated email summaries;Saved ~40 hours/week of manual Excel work;Improved replenishment timing and reduced stockouts;Accelerated supplier negotiations using accurate margin and velocity views"
+        data-images="/media/proj7.png,/media/proj7-1.png">
+
+        <h3>Inventory Dashboard</h3>
+        <div class="proj-meta">2025</div>
+
+        <p class="sub">
+          Data engineering and analytics solution for inventory and supplier optimization. Automates SellerCloud data processing and visualization for real-time stock health and sales insights.
+        </p>
+
+        <ul class="sub" style="margin:6px 0 8px 18px">
+          <li>Schema normalization, dedupe, and category mapping</li>
+          <li>Exception flagging for OOS risk, stale SKUs, and margin alerts</li>
+          <li>Automated refresh and email summaries to stakeholders</li>
+          <li>Impact: saved ~40 hrs/week, improved replenishment accuracy, reduced stockouts</li>
+        </ul>
+
+        <div class="proj-tags">
+          <span class="badge">Python</span>
+          <span class="badge">Pandas</span>
+          <span class="badge">Power BI</span>
+          <span class="badge">SellerCloud Exports</span>
+        </div>
+
+        <a class="linkish open-modal" href="#">Learn more →</a>
       </article>
 
-      <article class="card proj" data-title="LeadGen Ops Platform (Email → Tele → Slack)" data-year="2024" data-tags="Flask,FastAPI,n8n,Slack API" data-desc="Lead gen + emailing + tele-verification with Slack alerts." data-highlights="Role-based dashboards;Traceability" data-images="/media/leadgen-1.png">
-        <h3>LeadGen Ops Platform (Email → Tele → Slack)</h3><div class="proj-meta">2024</div><p class="sub">Leadgen, emailing & tele-verification with Slack alerts.</p><div class="proj-tags"><span class="badge">Flask</span><span class="badge">FastAPI</span><span class="badge">n8n</span><span class="badge">Slack API</span></div><a class="linkish open-modal" href="#">Learn more →</a>
+
+      <article class="card proj reveal"
+        data-title="Shopify Automation"
+        data-year="2025"
+        data-tags="Shopify Admin API,Python,AWS Lambda,HTML UI"
+        data-desc="Automation flow to enrich product descriptions from multiple supplier feeds, harmonize attributes, and update Shopify with consistent, SEO-optimized content."
+        data-highlights="Feed parsing and mapping with description templates;Attribute normalization and bulk update jobs with retry logic;Diff-only syncs to reduce API load;Optional human-in-the-loop review for high-value products;Catalog publishing time reduced by ~60%;Improved SEO consistency and conversion rates;Lower data-entry errors and supplier-side rework"
+        data-images="/media/proj8.png,/media/proj8-1.png">
+
+        <h3>Shopify Automation</h3>
+        <div class="proj-meta">2025</div>
+
+        <p class="sub">
+          End-to-end automation system for enriching and publishing Shopify product data from multiple supplier feeds. Ensures SEO-friendly, consistent, and error-free catalog updates.
+        </p>
+
+        <ul class="sub" style="margin:6px 0 8px 18px">
+          <li>Feed parsing, attribute mapping, and description templating</li>
+          <li>Bulk update jobs with retry logic and diff-only syncing</li>
+          <li>Human-in-the-loop review for premium products</li>
+          <li>Impact: 60% faster catalog publishing, improved SEO and accuracy</li>
+        </ul>
+
+        <div class="proj-tags">
+          <span class="badge">Shopify Admin API</span>
+          <span class="badge">Python</span>
+          <span class="badge">AWS Lambda</span>
+          <span class="badge">HTML UI</span>
+        </div>
+
+        <a class="linkish open-modal" href="#">Learn more →</a>
       </article>
 
-      <article class="card proj" data-title="Enterprise Dashboards w/ Google Sign-In" data-year="2024" data-tags="Flask,OAuth2,Google Workspace" data-desc="Secure dashboards with Google OAuth and granular access." data-highlights="SSO;Least-privilege" data-images="/media/oauth-1.png">
-        <h3>Enterprise Dashboards w/ Google Sign-In</h3><div class="proj-meta">2024</div><p class="sub">Secure dashboards with OAuth and roles.</p><div class="proj-tags"><span class="badge">Flask</span><span class="badge">OAuth2</span><span class="badge">Google Workspace</span></div><a class="linkish open-modal" href="#">Learn more →</a>
+      <article class="card proj reveal"
+        data-title="Lead Nurturing & CRM Automation Platform"
+        data-year="2025"
+        data-tags="Python,Flask,ReactJS,Google API,OAuth,Sheets,MongoDB"
+        data-desc="Flask-based CRM system that centralizes lead storage, qualification, and engagement while automating personalized nurturing workflows with AI chatbots and campaign engines."
+        data-highlights="Automatic lead capture and categorization across multiple channels;AI chatbot engagement based on stage, status, and campaign context;Automated email sequences and reminders triggered by engagement scores;Dynamic lead scoring from behavior and interactions;25–30% higher lead-to-opportunity conversions;60% less manual effort in lead management;Unified campaign and engagement analytics"
+        data-images="/media/proj9.png,/media/proj9-1.png"
+        data-video="/media/proj9.mp4">
+
+        <h3>Lead Nurturing & CRM Automation Platform</h3>
+        <div class="proj-meta">2025</div>
+
+        <p class="sub">
+          Flask-based CRM and automation platform that manages the complete lead lifecycle—from acquisition to conversion—through AI chatbots, campaign automation, and real-time engagement analytics.
+        </p>
+
+        <ul class="sub" style="margin:6px 0 8px 18px">
+          <li>Auto-captures and categorizes leads from email, forms, chat, and campaigns</li>
+          <li>AI chatbot nurtures prospects with contextual, stage-based interactions</li>
+          <li>Campaign engine automates follow-ups, reminders, and engagement flows</li>
+          <li>Dynamic lead scoring and unified engagement analytics</li>
+          <li>Impact: 25–30% higher conversions and 60% less manual effort</li>
+        </ul>
+
+        <div class="proj-tags">
+          <span class="badge">Python</span>
+          <span class="badge">Flask</span>
+          <span class="badge">ReactJS</span>
+          <span class="badge">MongoDB</span>
+          <span class="badge">Google API</span>
+          <span class="badge">OAuth</span>
+          <span class="badge">Sheets</span>
+        </div>
+
+        <a class="linkish open-modal" href="#">Learn more →</a>
       </article>
 
-      <article class="card proj" data-title="AWS Serverless Deployment Pipeline" data-year="2024" data-tags="Lambda,API GW,S3,CloudFront,Amplify,GitHub Actions" data-desc="Multi-service deploys with IaC + CI/CD." data-highlights="Blue/green;Secrets mgmt" data-images="/media/aws-1.png">
-        <h3>AWS Serverless Deployment Pipeline</h3><div class="proj-meta">2024</div><p class="sub">Multi-service deploys with IaC + CI/CD.</p><div class="proj-tags"><span class="badge">Lambda</span><span class="badge">API GW</span><span class="badge">S3</span><span class="badge">CloudFront</span><span class="badge">Amplify</span><span class="badge">GitHub Actions</span></div><a class="linkish open-modal" href="#">Learn more →</a>
-      </article>
+
+      
 
       <!-- 4 generic slots -->
+      <!-- <article class="card proj" data-title="Project Slot" data-year="—" data-tags="" data-desc="Add your next project here." data-highlights="" data-images=""><h3>Project Slot</h3><div class="proj-meta">—</div><p class="sub">Add your next project here.</p><a class="linkish open-modal" href="#">Learn more →</a></article>
       <article class="card proj" data-title="Project Slot" data-year="—" data-tags="" data-desc="Add your next project here." data-highlights="" data-images=""><h3>Project Slot</h3><div class="proj-meta">—</div><p class="sub">Add your next project here.</p><a class="linkish open-modal" href="#">Learn more →</a></article>
       <article class="card proj" data-title="Project Slot" data-year="—" data-tags="" data-desc="Add your next project here." data-highlights="" data-images=""><h3>Project Slot</h3><div class="proj-meta">—</div><p class="sub">Add your next project here.</p><a class="linkish open-modal" href="#">Learn more →</a></article>
-      <article class="card proj" data-title="Project Slot" data-year="—" data-tags="" data-desc="Add your next project here." data-highlights="" data-images=""><h3>Project Slot</h3><div class="proj-meta">—</div><p class="sub">Add your next project here.</p><a class="linkish open-modal" href="#">Learn more →</a></article>
-      <article class="card proj" data-title="Project Slot" data-year="—" data-tags="" data-desc="Add your next project here." data-highlights="" data-images=""><h3>Project Slot</h3><div class="proj-meta">—</div><p class="sub">Add your next project here.</p><a class="linkish open-modal" href="#">Learn more →</a></article>
+      <article class="card proj" data-title="Project Slot" data-year="—" data-tags="" data-desc="Add your next project here." data-highlights="" data-images=""><h3>Project Slot</h3><div class="proj-meta">—</div><p class="sub">Add your next project here.</p><a class="linkish open-modal" href="#">Learn more →</a></article> -->
     </div>
 
     <div class="more-wrap">
@@ -573,6 +760,14 @@
   </div>
 </div>
 
+<!-- FULLSCREEN IMAGE VIEWER -->
+<div id="fs-viewer" class="fs-viewer">
+  <button id="fs-close" class="btn-fs fs-close" aria-label="Close fullscreen">✕</button>
+  <button id="fs-prev" class="btn-fs fs-prev" aria-label="Previous image">‹</button>
+  <button id="fs-next" class="btn-fs fs-next" aria-label="Next image">›</button>
+  <img id="fs-img" src="" alt="Fullscreen project image">
+</div>
+
 <script>
   // year
   document.getElementById('yr').textContent = new Date().getFullYear();
@@ -588,15 +783,17 @@
   const moreBtn = document.getElementById('reveal-more');
   const moreText = document.getElementById('reveal-text');
   const moreGrid = document.getElementById('projects-more');
-  function setMore(open){
+  function setMore(open, shouldScroll = false){
     moreGrid.style.display = open ? 'grid' : 'none';
     moreBtn.setAttribute('aria-expanded', String(open));
     moreText.textContent = open ? 'Show fewer' : `Show ${moreGrid.children.length} more projects`;
-    (open ? moreGrid : document.getElementById('projects-featured'))
-      .scrollIntoView({ behavior:'smooth', block:'start' });
+    if (shouldScroll) {
+      (open ? moreGrid : document.getElementById('projects-featured'))
+        .scrollIntoView({ behavior:'smooth', block:'start' });
+    }
   }
   setMore(false);
-  moreBtn.addEventListener('click', ()=> setMore(moreBtn.getAttribute('aria-expanded') !== 'true'));
+  moreBtn.addEventListener('click', ()=> setMore(moreBtn.getAttribute('aria-expanded') !== 'true', true));
 
   // message form
   function sendMail(e){
@@ -646,8 +843,20 @@
   const lbClose = document.getElementById('lb-close');
   const prevBtn = document.getElementById('lb-prev');
   const nextBtn = document.getElementById('lb-next');
-  let slideIdx = 0;
+  // Fullscreen viewer elements
+  const fsViewer = document.getElementById('fs-viewer');
+  const fsImg = document.getElementById('fs-img');
+  const fsClose = document.getElementById('fs-close');
+  const fsPrev = document.getElementById('fs-prev');
+  const fsNext = document.getElementById('fs-next');
 
+  let slideIdx = 0;
+  let currentSlides = [];
+
+  lbSlides.addEventListener('click', (e) => {
+    if (e.target.tagName === 'IMG') openFsViewer();
+  });
+  
   function openLB(card){
     lbTitle.textContent = card.dataset.title || '';
     lbYear.textContent  = card.dataset.year || '';
@@ -660,28 +869,30 @@
     });
 
     lbSlides.innerHTML=''; lbDots.innerHTML=''; slideIdx=0;
-    const slides=[]; const video=(card.dataset.video||'').trim();
-    if(video) slides.push({type:'video',src:video});
-    (card.dataset.images||'').split(',').map(s=>s.trim()).filter(Boolean).forEach(src=>slides.push({type:'image',src}));
-    if(slides.length===0) slides.push({type:'image',src:'/media/placeholder.png'});
-    slides.forEach((sl,i)=>{
+    currentSlides=[]; const video=(card.dataset.video||'').trim();
+    if(video) currentSlides.push({type:'video',src:video});
+    (card.dataset.images||'').split(',').map(s=>s.trim()).filter(Boolean).forEach(src=>currentSlides.push({type:'image',src}));
+    if(currentSlides.length===0) currentSlides.push({type:'image',src:'/media/placeholder.png'});
+    currentSlides.forEach((sl,i)=>{
       const wrap=document.createElement('div'); wrap.className='slide'+(i===0?' active':'');
       if (sl.type === 'video') {
         const v = document.createElement('video');
-        v.setAttribute('controls', 'controls');
-        v.setAttribute('playsinline', 'playsinline');
-        v.setAttribute('preload', 'metadata');
-        v.style.maxHeight = '60vh';
-        v.style.width = '100%';
-        v.style.borderRadius = '10px';
-
+        v.className = 'lb-media';
+        v.controls = true;
+        v.playsInline = true;
+        v.preload = 'metadata';
         const src = document.createElement('source');
-        src.src = sl.src;
-        src.type = 'video/mp4';
-
+        src.src = sl.src; src.type = 'video/mp4';
         v.appendChild(src);
         wrap.appendChild(v);
-      } else { const img=document.createElement('img'); img.src=sl.src; img.alt=lbTitle.textContent; img.style.maxHeight='60vh'; img.style.width='100%'; img.style.objectFit='contain'; img.style.borderRadius='10px'; wrap.appendChild(img);}
+      } else {
+        const img = document.createElement('img');
+        img.className = 'lb-media';
+        img.src = sl.src;
+        img.alt = lbTitle.textContent;
+        wrap.appendChild(img);
+      }
+
       lbSlides.appendChild(wrap);
       const dot=document.createElement('div'); dot.className='dot'+(i===0?' active':''); dot.addEventListener('click',()=>go(i)); lbDots.appendChild(dot);
     });
@@ -694,11 +905,35 @@
     slides[i].classList.add('active');
     lbDots.querySelectorAll('.dot').forEach((d,idx)=>d.classList.toggle('active', idx===i));
     slideIdx=i;
+    // If fullscreen viewer is open, update its image
+    if (fsViewer.classList.contains('open')) {
+      const currentSlideData = currentSlides[slideIdx];
+      if (currentSlideData.type === 'image') {
+        fsImg.src = currentSlideData.src;
+      } else {
+        // If next slide is a video, close fs viewer
+        closeFsViewer();
+      }
+    }
   }
+  // Lightbox navigation
   prevBtn.addEventListener('click',()=>{const n=(slideIdx-1+lbSlides.children.length)%lbSlides.children.length; go(n);});
   nextBtn.addEventListener('click',()=>{const n=(slideIdx+1)%lbSlides.children.length; go(n);});
   lbClose.addEventListener('click',closeLB);
   lb.addEventListener('click',(e)=>{ if(e.target===lb) closeLB(); });
+
+  // Fullscreen viewer logic
+  function openFsViewer() {
+    const currentSlideData = currentSlides[slideIdx];
+    if (currentSlideData.type !== 'image') return; // only zoom images
+    fsImg.src = currentSlideData.src;
+    fsViewer.classList.add('open');
+  }
+  function closeFsViewer() { fsViewer.classList.remove('open'); }
+  fsClose.addEventListener('click', closeFsViewer);
+  fsPrev.addEventListener('click', () => { const n = (slideIdx - 1 + currentSlides.length) % currentSlides.length; go(n); });
+  fsNext.addEventListener('click', () => { const n = (slideIdx + 1) % currentSlides.length; go(n); });
+
   document.querySelectorAll('.open-modal').forEach(a=>{
     a.addEventListener('click',(e)=>{ e.preventDefault(); const card=a.closest('.proj'); if(card) openLB(card); });
   });

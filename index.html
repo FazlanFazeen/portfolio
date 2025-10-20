@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fazlan Fazeen — AI Automation Portfolio</title>
+  <meta name="description" content="Fazlan Fazeen — AI Automation & Data Engineering portfolio: projects, services, and contact." />
+  <meta name="color-scheme" content="dark light" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0c10; --bg-2:#0f1116; --card:#12141b; --line:#1e2230; --muted:#a1a8b3;
+      --text:#eef2f7; --accent:#18c7c7; --accent-2:#00f5d4; --glow:0 10px 30px rgba(24,199,199,.25);
+      --radius:18px; --ring:0 0 0 2px var(--line);
+    }
+    @media (prefers-color-scheme: light){
+      :root{ --bg:#f7fafc; --bg-2:#ffffff; --card:#ffffff; --line:#e6eaf0; --muted:#4a5568; --text:#111827; }
+      .starfield{ opacity:.08 }
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,Helvetica,sans-serif; background:radial-gradient(1200px 600px at 20% -10%, rgba(24,199,199,.06), transparent 60%), var(--bg); color:var(--text); line-height:1.6;}
+    a{color:inherit; text-decoration:none}
+    img{max-width:100%; display:block}
+    .wrap{max-width:1160px; margin:0 auto; padding:0 20px}
+    .btn{display:inline-flex; gap:.6rem; align-items:center; padding:.85rem 1.1rem; border-radius:12px; border:1px solid var(--line); background:linear-gradient(180deg, var(--bg-2), var(--card)); box-shadow:var(--ring); transition:.2s transform, .3s box-shadow}
+    .btn:hover{transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.25)}
+    .btn--accent{border-color:transparent; background:linear-gradient(180deg, var(--accent), var(--accent-2)); color:#0b0c10; font-weight:700; box-shadow:0 10px 30px rgba(0, 245, 212, .25)}
+    .chip{display:inline-flex; align-items:center; gap:.5rem; padding:.4rem .7rem; border-radius:999px; border:1px solid var(--line); background:var(--bg-2); font-size:.85rem}
+    header{position:sticky; top:0; z-index:40; backdrop-filter:saturate(140%) blur(8px); background:color-mix(in oklab, var(--bg-2) 80%, transparent); border-bottom:1px solid var(--line)}
+    nav{display:flex; align-items:center; justify-content:space-between; padding:.8rem 0}
+    nav .links{display:flex; gap:1rem; flex-wrap:wrap}
+    nav a{padding:.6rem .8rem; border-radius:10px}
+    nav a:hover{background:var(--bg-2)}
+    .theme-toggle{border:1px solid var(--line); border-radius:10px; padding:.5rem .7rem; background:var(--bg-2)}
+
+    /* Hero */
+    .hero{position:relative; padding:96px 0 56px}
+    .headline{font-size:clamp(34px, 6vw, 56px); line-height:1.05; font-weight:800; letter-spacing:-.02em;}
+    .sub{font-size:clamp(16px, 2.6vw, 20px); color:var(--muted)}
+    .hero .cta{display:flex; gap:.8rem; flex-wrap:wrap; margin-top:1.2rem}
+    .starfield{position:absolute; inset:0; pointer-events:none; opacity:.18}
+
+    /* Sections */
+    section{padding:72px 0; border-top:1px solid var(--line)}
+    h2{font-size:clamp(22px, 3vw, 28px); margin:0 0 18px}
+    .section-sub{color:var(--muted); margin:0 0 28px}
+
+    /* Grids */
+    .grid{display:grid; gap:16px}
+    .grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+    @media (max-width:1024px){ .grid-4{grid-template-columns:repeat(2,minmax(0,1fr))} }
+    @media (max-width:780px){ .grid-3,.grid-2,.grid-4{grid-template-columns:1fr} nav .links{display:none} }
+
+    /* Cards */
+    .card{position:relative; border:1px solid var(--line); background:linear-gradient(180deg, var(--bg-2), var(--card)); border-radius:var(--radius); padding:18px; box-shadow:var(--glow)}
+    .card .kicker{font-size:.8rem; color:var(--muted)}
+    .card h3{margin:.2rem 0 .6rem; font-size:1.15rem}
+
+    /* Timeline */
+    .tl{position:relative; margin-left:14px}
+    .tl::before{content:""; position:absolute; left:0; top:.5rem; bottom:.5rem; width:2px; background:var(--line)}
+    .tli{position:relative; margin:0 0 22px 18px}
+    .tli::before{content:""; position:absolute; left:-19px; top:.45rem; width:10px; height:10px; border-radius:50%; background:var(--accent)}
+
+    /* Badges row */
+    .skills{display:flex; flex-wrap:wrap; gap:.6rem}
+
+    /* Project thumbnail */
+    .thumb{aspect-ratio:16/10; border-radius:14px; border:1px solid var(--line); overflow:hidden; display:grid; place-items:center; background:radial-gradient(800px 300px at 10% -10%, rgba(24,199,199,.08), transparent 60%), #0c0e13}
+    .thumb svg{width:64px; opacity:.6}
+
+    /* Footer */
+    footer{padding:34px 0; border-top:1px solid var(--line); color:var(--muted)}
+
+    /* Tiny helpers */
+    .row{display:flex; gap:18px; align-items:center; flex-wrap:wrap}
+    .grow{flex:1}
+    .muted{color:var(--muted)}
+    .right{margin-left:auto}
+  </style>
+</head>
+<body>
+  <canvas class="starfield" id="stars"></canvas>
+  <header>
+    <div class="wrap">
+      <nav>
+        <div class="row">
+          <strong>Fazlan</strong>
+          <span class="chip" title="Colombo, Sri Lanka">AI Automation</span>
+        </div>
+        <div class="links">
+          <a href="#about">About</a>
+          <a href="#skills">Skills</a>
+          <a href="#projects">Projects</a>
+          <a href="#services">Services</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <button class="theme-toggle" id="themeBtn" aria-label="Toggle theme">☼</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="home" aria-label="Intro">
+    <div class="wrap">
+      <div class="grid grid-2" style="align-items:center">
+        <div>
+          <p class="chip">Automating what's next with AI</p>
+          <h1 class="headline">I design and ship AI‑powered automations so teams can focus on what matters.</h1>
+          <p class="sub">Specializing in data workflows, integrations, and agentic tooling across Python, FastAPI, Flask, Django, n8n, Power Automate, and Power BI/Fabric.</p>
+          <div class="cta">
+            <a class="btn btn--accent" href="#contact">Start a project
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 12H4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a class="btn" href="#projects">See work</a>
+          </div>
+        </div>
+        <div class="card" aria-hidden="true">
+          <div class="thumb">
+            <!-- Minimal circuit icon -->
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 6h10m0 0V4m0 2v8m6 0H8m0 0v6m0-6h6" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+          </div>
+          <div style="padding-top:10px">
+            <div class="row"><span class="kicker">Latest</span><span class="muted right">2025</span></div>
+            <h3>Sales Proposal Automation Portal</h3>
+            <p class="muted">Email‑to‑proposal pipeline with SharePoint, Azure Logic Apps, and Python—structured data, escalations, and auto‑generated docs.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="wrap grid grid-2">
+      <div>
+        <h2>About</h2>
+        <p class="section-sub">AI automation consultant focused on turning messy, manual processes into reliable systems. I prototype quickly, validate with stakeholders, and harden into production with logs, alerts, and clear ownership.</p>
+        <div class="tl">
+          <div class="tli"><strong>2025 — Now</strong><br/>NexoraAI LLC • AI automation and data workflows.</div>
+          <div class="tli"><strong>2023 — 2025</strong><br/>Automation across hospitality, e‑commerce, and recruitment.</div>
+        </div>
+      </div>
+      <div class="card">
+        <span class="kicker">What I value</span>
+        <h3>Clarity, maintainability, and measurable impact</h3>
+        <ul class="muted" style="margin:0; padding-left:18px">
+          <li>Small, observable services over fragile mega‑scripts.</li>
+          <li>Idempotent jobs with safe retries and alerts.</li>
+          <li>Docs that match reality and onboarding paths.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="wrap">
+      <h2>Skills</h2>
+      <p class="section-sub">Constantly exploring and learning to deliver more value every sprint.</p>
+      <div class="grid grid-4">
+        <div class="card">
+          <span class="kicker">Core</span>
+          <h3>Python & Web</h3>
+          <div class="skills">
+            <span class="chip">Python</span>
+            <span class="chip">FastAPI</span>
+            <span class="chip">Flask</span>
+            <span class="chip">Django</span>
+            <span class="chip">Selenium</span>
+            <span class="chip">BeautifulSoup</span>
+          </div>
+        </div>
+        <div class="card">
+          <span class="kicker">Automation</span>
+          <h3>Workflows</h3>
+          <div class="skills">
+            <span class="chip">n8n</span>
+            <span class="chip">Power Automate</span>
+            <span class="chip">Zapier</span>
+            <span class="chip">Make</span>
+            <span class="chip">Google Apps Script</span>
+          </div>
+        </div>
+        <div class="card">
+          <span class="kicker">Data</span>
+          <h3>Analytics</h3>
+          <div class="skills">
+            <span class="chip">Power BI</span>
+            <span class="chip">Fabric</span>
+            <span class="chip">Pandas</span>
+            <span class="chip">SQL</span>
+            <span class="chip">PostgreSQL</span>
+            <span class="chip">SQLite</span>
+          </div>
+        </div>
+        <div class="card">
+          <span class="kicker">DevOps</span>
+          <h3>Platforms</h3>
+          <div class="skills">
+            <span class="chip">AWS</span>
+            <span class="chip">Azure</span>
+            <span class="chip">Docker</span>
+            <span class="chip">Git</span>
+            <span class="chip">CI/CD</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="wrap">
+      <h2>Selected Projects</h2>
+      <p class="section-sub">A mix of client work and R&D. More upon request.</p>
+      <div class="grid grid-3">
+        <article class="card">
+          <div class="thumb" role="img" aria-label="Watch e‑commerce enrichment">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8m-8 4h6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Shopify Enrichment Bot</h3>
+          <p class="muted">Python + Lambda to enrich supplier descriptions, push updates via Shopify Admin API, and log diffs.</p>
+          <div class="row"><span class="chip">AWS Lambda</span><span class="chip">Shopify</span><span class="chip">OpenAI</span></div>
+        </article>
+        <article class="card">
+          <div class="thumb" role="img" aria-label="Sales portal">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18M6 12h12M9 18h6" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Sales Proposal Portal</h3>
+          <p class="muted">Inbound email parsing to structured SQL, rate requests, and auto‑generated proposals with escalations.</p>
+          <div class="row"><span class="chip">Python</span><span class="chip">SharePoint</span><span class="chip">Logic Apps</span></div>
+        </article>
+        <article class="card">
+          <div class="thumb" role="img" aria-label="Interview assistant">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 5h14v10H5zM8 19h8" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Real‑Time Interview Assistant</h3>
+          <p class="muted">Streamlit dashboard with multi‑modal scoring, SHAP insights, and live prompts for interviewers.</p>
+          <div class="row"><span class="chip">Streamlit</span><span class="chip">NLP</span><span class="chip">SHAP</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="wrap">
+      <h2>Services</h2>
+      <p class="section-sub">Designed for measurable outcomes. Clear SLAs for response and resolution.</p>
+      <div class="grid grid-3">
+        <div class="card">
+          <div class="row"><strong>Automation & Integrations</strong><span class="right chip">Build</span></div>
+          <p class="muted">APIs, webhooks, and scheduled jobs. Idempotent design, safe retries, and logging baked in.</p>
+          <div class="skills">
+            <span class="chip">FastAPI</span><span class="chip">n8n</span><span class="chip">Zapier</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="row"><strong>Data Apps & Dashboards</strong><span class="right chip">Insight</span></div>
+          <p class="muted">Fabric/Power BI models with clean semantics, RLS, and Excel‑friendly outputs when needed.</p>
+          <div class="skills">
+            <span class="chip">Power BI</span><span class="chip">Fabric</span><span class="chip">SQL</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="row"><strong>Process Discovery</strong><span class="right chip">Audit</span></div>
+          <p class="muted">Map current workflows, define success metrics, and plan the smallest valuable automation first.</p>
+          <div class="skills">
+            <span class="chip">SOPs</span><span class="chip">KPIs</span><span class="chip">Roadmaps</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="wrap grid grid-2">
+      <div>
+        <h2>Contact</h2>
+        <p class="section-sub">Have a workflow to automate or a dashboard to ship? Let’s talk.</p>
+        <div class="row" style="gap:10px; align-items:flex-start">
+          <a class="btn btn--accent" href="mailto:fazlanfazeen786@gmail.com">Email me</a>
+          <a class="btn" href="https://www.linkedin.com/in/fazlan-fazeen" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="btn" href="#" onclick="alert('Resume download placeholder')">Download CV</a>
+        </div>
+      </div>
+      <form class="card" onsubmit="event.preventDefault(); alert('Thanks! I will reply soon.');">
+        <span class="kicker">Quick note</span>
+        <h3>Tell me about your project</h3>
+        <label>
+          <span class="muted">Your email</span>
+          <input required name="email" type="email" placeholder="you@company.com" style="width:100%; padding:.9rem; border-radius:12px; border:1px solid var(--line); background:var(--bg-2); color:var(--text); margin:.4rem 0 10px" />
+        </label>
+        <label>
+          <span class="muted">Message</span>
+          <textarea required name="msg" rows="4" placeholder="What are you aiming to automate or analyze?" style="width:100%; padding:.9rem; border-radius:12px; border:1px solid var(--line); background:var(--bg-2); color:var(--text); margin:.4rem 0 14px"></textarea>
+        </label>
+        <button class="btn btn--accent" type="submit">Send</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap row">
+      <span>© <span id="yr"></span> Fazlan Fazeen</span>
+      <span class="right">Built with plain HTML/CSS/JS</span>
+    </div>
+  </footer>
+
+  <script>
+    // Year
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    // Theme toggle (very simple)
+    const btn = document.getElementById('themeBtn');
+    btn.addEventListener('click',()=>{
+      document.documentElement.toggleAttribute('data-light');
+      if(document.documentElement.hasAttribute('data-light')){
+        document.documentElement.style.colorScheme='light';
+      }else{
+        document.documentElement.style.colorScheme='dark';
+      }
+    });
+
+    // Starfield canvas background
+    const c = document.getElementById('stars');
+    const ctx = c.getContext('2d');
+    let w, h, stars;
+    function resize(){ w = c.width = window.innerWidth; h = c.height = document.querySelector('.hero').offsetHeight + 120; make(); draw(); }
+    function make(){ stars = Array.from({length:120}, ()=>({ x:Math.random()*w, y:Math.random()*h, r:Math.random()*1.6+0.2, s:Math.random()*0.6+0.2 })); }
+    function draw(){ ctx.clearRect(0,0,w,h); for(const p of stars){ ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle='rgba(24,199,199,'+(0.2+p.s*0.6)+')'; ctx.fill(); p.x += p.s; if(p.x> w) p.x = 0; } requestAnimationFrame(draw); }
+    window.addEventListener('resize', resize, {passive:true});
+    resize();
+  </script>
+</body>
+</html>

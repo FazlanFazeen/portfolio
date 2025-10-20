@@ -4,180 +4,78 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Fazlan Fazeen — AI Automation Portfolio</title>
-  <meta name="description" content="Fazlan Fazeen — AI Automation & Data Engineering portfolio: projects, services, and contact." />
   <meta name="color-scheme" content="light" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#f8fafc; --bg-2:#ffffff; --card:#ffffff; --line:#e2e8f0; --muted:#475569;
-      --text:#111827; --accent:#0891b2; --accent-2:#0ea5e9; --glow:0 10px 20px rgba(14,165,233,.15);
-      --radius:18px; --ring:0 0 0 2px var(--line);
+      --bg:#f9fafb; --card:#ffffff; --text:#111827; --muted:#4b5563; --line:#e5e7eb; --accent:#0ea5e9;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,Helvetica,sans-serif; background:var(--bg); color:var(--text); line-height:1.6;}
-    a{color:inherit; text-decoration:none}
-    img{max-width:100%; display:block}
-    .wrap{max-width:1160px; margin:0 auto; padding:0 20px}
-    .btn{display:inline-flex; gap:.6rem; align-items:center; padding:.85rem 1.1rem; border-radius:12px; border:1px solid var(--line); background:linear-gradient(180deg, var(--bg-2), var(--card)); box-shadow:var(--ring); transition:.2s transform, .3s box-shadow}
-    .btn:hover{transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,0,0,.08)}
-    .btn--accent{border-color:transparent; background:linear-gradient(180deg, var(--accent), var(--accent-2)); color:white; font-weight:700; box-shadow:0 10px 20px rgba(14,165,233,.25)}
-    .chip{display:inline-flex; align-items:center; gap:.5rem; padding:.4rem .7rem; border-radius:999px; border:1px solid var(--line); background:var(--bg-2); font-size:.85rem}
-    header{position:sticky; top:0; z-index:40; backdrop-filter:saturate(140%) blur(8px); background:rgba(255,255,255,0.85); border-bottom:1px solid var(--line)}
-    nav{display:flex; align-items:center; justify-content:space-between; padding:.8rem 0}
-    nav .links{display:flex; gap:1rem; flex-wrap:wrap}
-    nav a{padding:.6rem .8rem; border-radius:10px}
-    nav a:hover{background:var(--bg-2)}
+    body{margin:0;font-family:Inter,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
+    .wrap{max-width:1100px;margin:auto;padding:0 1rem}
+    header,footer{background:var(--card);border-bottom:1px solid var(--line);padding:1rem 0;position:sticky;top:0;z-index:10}
+    h1,h2{color:#0f172a}
+    .hero{padding:4rem 0;text-align:center}
+    .btn{background:var(--accent);color:white;padding:.7rem 1.1rem;border:none;border-radius:10px;cursor:pointer}
+    section{padding:3rem 0;border-top:1px solid var(--line)}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1rem;box-shadow:0 2px 6px rgba(0,0,0,.05)}
+    footer{text-align:center;color:var(--muted)}
 
-    .hero{position:relative; padding:96px 0 56px; background:linear-gradient(180deg, #e0f2fe 0%, #ffffff 100%)}
-    .headline{font-size:clamp(34px, 6vw, 56px); line-height:1.05; font-weight:800; letter-spacing:-.02em; color:#0f172a}
-    .sub{font-size:clamp(16px, 2.6vw, 20px); color:var(--muted)}
-    .hero .cta{display:flex; gap:.8rem; flex-wrap:wrap; margin-top:1.2rem}
-
-    section{padding:72px 0; border-top:1px solid var(--line); background:var(--bg)}
-    h2{font-size:clamp(22px, 3vw, 28px); margin:0 0 18px; color:#0f172a}
-    .section-sub{color:var(--muted); margin:0 0 28px}
-
-    .grid{display:grid; gap:16px}
-    .grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
-    .grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
-    @media (max-width:1024px){ .grid-4{grid-template-columns:repeat(2,minmax(0,1fr))} }
-    @media (max-width:780px){ .grid-3,.grid-2,.grid-4{grid-template-columns:1fr} nav .links{display:none} }
-
-    .card{position:relative; border:1px solid var(--line); background:var(--card); border-radius:var(--radius); padding:18px; box-shadow:var(--glow)}
-    .card .kicker{font-size:.8rem; color:var(--muted)}
-    .card h3{margin:.2rem 0 .6rem; font-size:1.15rem; color:#0f172a}
-
-    .tl{position:relative; margin-left:14px}
-    .tl::before{content:""; position:absolute; left:0; top:.5rem; bottom:.5rem; width:2px; background:var(--line)}
-    .tli{position:relative; margin:0 0 22px 18px}
-    .tli::before{content:""; position:absolute; left:-19px; top:.45rem; width:10px; height:10px; border-radius:50%; background:var(--accent)}
-
-    .skills{display:flex; flex-wrap:wrap; gap:.6rem}
-    .thumb{aspect-ratio:16/10; border-radius:14px; border:1px solid var(--line); overflow:hidden; display:grid; place-items:center; background:#f1f5f9}
-    .thumb svg{width:64px; opacity:.6}
-
-    footer{padding:34px 0; border-top:1px solid var(--line); color:var(--muted); background:#f9fafb}
-    .row{display:flex; gap:18px; align-items:center; flex-wrap:wrap}
-    .right{margin-left:auto}
+    /* AI Quote Widget */
+    #aiQuoteWidget{position:fixed;bottom:20px;right:20px;width:260px;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 4px 18px rgba(0,0,0,.1);padding:1rem;z-index:50;transition:transform .3s ease;}
+    #aiQuoteWidget:hover{transform:translateY(-3px)}
+    #aiQuoteWidget h4{margin:.2rem 0;font-size:1rem;color:var(--accent)}
+    #aiQuoteWidget p{font-size:.9rem;color:var(--muted)}
+    #newQuote{background:none;border:none;color:var(--accent);cursor:pointer;font-weight:600;margin-top:.4rem}
   </style>
 </head>
 <body>
   <header>
-    <div class="wrap">
-      <nav>
-        <div class="row">
-          <strong>Fazlan</strong>
-          <span class="chip" title="Colombo, Sri Lanka">AI Automation</span>
-        </div>
-        <div class="links">
-          <a href="#about">About</a>
-          <a href="#skills">Skills</a>
-          <a href="#projects">Projects</a>
-          <a href="#services">Services</a>
-          <a href="#contact">Contact</a>
-        </div>
-      </nav>
-    </div>
+    <div class="wrap"><strong>Fazlan Fazeen — AI Automation Portfolio</strong></div>
   </header>
 
-  <section class="hero" id="home">
+  <section class="hero">
     <div class="wrap">
-      <div class="grid grid-2" style="align-items:center">
-        <div>
-          <p class="chip">Automating what's next with AI</p>
-          <h1 class="headline">I design and ship AI-powered automations so teams can focus on what matters.</h1>
-          <p class="sub">Specializing in data workflows, integrations, and agentic tooling across Python, FastAPI, Flask, Django, n8n, Power Automate, and Power BI/Fabric.</p>
-          <div class="cta">
-            <a class="btn btn--accent" href="#contact">Start a project</a>
-            <a class="btn" href="#projects">See work</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="about">
-    <div class="wrap grid grid-2">
-      <div>
-        <h2>About</h2>
-        <p class="section-sub">AI automation consultant focused on turning manual processes into reliable systems. I prototype quickly, validate with stakeholders, and deliver measurable impact.</p>
-        <div class="tl">
-          <div class="tli"><strong>2025 — Now</strong><br/>NexoraAI LLC • AI automation and data workflows.</div>
-          <div class="tli"><strong>2023 — 2025</strong><br/>Automation across hospitality, e-commerce, and recruitment.</div>
-        </div>
-      </div>
-      <div class="card">
-        <span class="kicker">What I value</span>
-        <h3>Clarity, maintainability, and measurable results</h3>
-        <ul class="muted" style="margin:0; padding-left:18px">
-          <li>Modular, observable services over fragile scripts.</li>
-          <li>Reliable jobs with logs and retries.</li>
-          <li>Up-to-date docs and onboarding paths.</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <section id="skills">
-    <div class="wrap">
-      <h2>Skills</h2>
-      <p class="section-sub">Constantly exploring and learning to deliver more value every sprint.</p>
-      <div class="grid grid-4">
-        <div class="card"><span class="kicker">Core</span><h3>Python & Web</h3><div class="skills"><span class="chip">Python</span><span class="chip">FastAPI</span><span class="chip">Flask</span><span class="chip">Django</span></div></div>
-        <div class="card"><span class="kicker">Automation</span><h3>Workflows</h3><div class="skills"><span class="chip">n8n</span><span class="chip">Power Automate</span><span class="chip">Zapier</span></div></div>
-        <div class="card"><span class="kicker">Data</span><h3>Analytics</h3><div class="skills"><span class="chip">Power BI</span><span class="chip">Fabric</span><span class="chip">SQL</span></div></div>
-        <div class="card"><span class="kicker">DevOps</span><h3>Platforms</h3><div class="skills"><span class="chip">AWS</span><span class="chip">Azure</span><span class="chip">Docker</span></div></div>
-      </div>
+      <h1>Automating what's next with AI</h1>
+      <p>Building scalable automation and intelligent data systems that let people focus on what matters most.</p>
+      <button class="btn">Contact Me</button>
     </div>
   </section>
 
   <section id="projects">
     <div class="wrap">
       <h2>Projects</h2>
-      <div class="grid grid-3">
-        <div class="card"><div class="thumb"></div><h3>Shopify Enrichment Bot</h3><p class="muted">Lambda to enrich supplier descriptions and sync with Shopify API.</p></div>
-        <div class="card"><div class="thumb"></div><h3>Sales Proposal Portal</h3><p class="muted">Email-to-proposal automation with SharePoint and Logic Apps.</p></div>
-        <div class="card"><div class="thumb"></div><h3>Real-Time Interview Assistant</h3><p class="muted">Streamlit app for candidate evaluation and insights.</p></div>
+      <div class="card">
+        <h3>Sales Proposal Automation Portal</h3>
+        <p>Email-to-proposal pipeline with SharePoint, Azure Logic Apps, and Python.</p>
       </div>
-    </div>
-  </section>
-
-  <section id="services">
-    <div class="wrap">
-      <h2>Services</h2>
-      <div class="grid grid-3">
-        <div class="card"><strong>Automation & Integrations</strong><p class="muted">API and workflow builds with safe retries and logs.</p></div>
-        <div class="card"><strong>Data Apps & Dashboards</strong><p class="muted">Power BI/Fabric semantic models and visual dashboards.</p></div>
-        <div class="card"><strong>Process Discovery</strong><p class="muted">Audit and roadmap for the next automation opportunity.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="contact">
-    <div class="wrap grid grid-2">
-      <div>
-        <h2>Contact</h2>
-        <p class="section-sub">Have a workflow to automate or dashboard to build?</p>
-        <div class="row" style="gap:10px">
-          <a class="btn btn--accent" href="mailto:fazlanfazeen786@gmail.com">Email me</a>
-          <a class="btn" href="https://www.linkedin.com/in/fazlan-fazeen" target="_blank">LinkedIn</a>
-        </div>
-      </div>
-      <form class="card" onsubmit="event.preventDefault(); alert('Thanks! I will reply soon.');">
-        <h3>Quick note</h3>
-        <input required name="email" type="email" placeholder="you@company.com" style="width:100%; padding:.9rem; border-radius:12px; border:1px solid var(--line); margin:.4rem 0 10px" />
-        <textarea required name="msg" rows="4" placeholder="What do you want to automate?" style="width:100%; padding:.9rem; border-radius:12px; border:1px solid var(--line); margin:.4rem 0 14px"></textarea>
-        <button class="btn btn--accent" type="submit">Send</button>
-      </form>
     </div>
   </section>
 
   <footer>
-    <div class="wrap row"><span>© <span id="yr"></span> Fazlan Fazeen</span><span class="right">Built with HTML/CSS</span></div>
+    <div class="wrap">© <span id="yr"></span> Fazlan Fazeen</div>
   </footer>
-  <script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+
+  <!-- AI Quote Widget -->
+  <div id="aiQuoteWidget">
+    <h4>💡 AI Insight</h4>
+    <p id="quote">“Automation doesn’t replace people—it amplifies what they can do.”</p>
+    <button id="newQuote">New Quote</button>
+  </div>
+
+  <script>
+    document.getElementById('yr').textContent=new Date().getFullYear();
+    const quotes=[
+      '“Automation doesn’t replace people—it amplifies what they can do.”',
+      '“AI is best used to remove friction, not replace thought.”',
+      '“Data becomes powerful when paired with automation.”',
+      '“The future belongs to those who automate intelligently.”',
+      '“Let AI handle repetition so you can handle innovation.”'
+    ];
+    const quoteEl=document.getElementById('quote');
+    document.getElementById('newQuote').addEventListener('click',()=>{
+      const q=quotes[Math.floor(Math.random()*quotes.length)];
+      quoteEl.textContent=q;
+    });
+  </script>
 </body>
 </html>
